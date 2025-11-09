@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курсы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #ff6b35; /* Оранжевый, как в Burger King */
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 колонки */
+            gap: 15px;
+            max-width: 800px; /* Для десктопа, на мобиле адаптируется */
+            margin: 0 auto;
+        }
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr; /* На мобиле 1 колонка */
+            }
+        }
+        .course-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .course-card:hover {
+            transform: scale(1.05);
+        }
+        .course-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .course-image.desc-mode {
+            height: 150px; /* Немного выше для описания */
+        }
+        .course-title {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #ff6b35;
+        }
+        .course-price {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .open-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .open-btn:hover {
+            background: #e55a2b;
+        }
+        .description {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .description.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Курсы по [твоя тема]</h1>
+        <p>Выберите курс и узнайте больше!</p>
+    </header>
+
+    <div class="grid-container" id="grid-container">
+        <!-- Карточки курсов: копируй этот блок для добавления новых -->
+        <div class="course-card">
+            <img src="https://via.placeholder.com/200x120?text=Курс+1" alt="Курс 1" class="course-image" onclick="toggleDesc(this)">
+            <div class="course-title">Курс 1: Основы</div>
+            <div class="course-price">₽999</div>
+            <div class="description" id="desc1">Описание: Этот курс научит вас основам. Длительность: 10 часов. Включает видео и тесты.</div>
+            <button class="open-btn" onclick="openCourse(1)">Открыть</button>
+        </div>
+
+        <div class="course-card">
+            <img src="https://via.placeholder.com/200x120?text=Курс+2" alt="Курс 2" class="course-image" onclick="toggleDesc(this)">
+            <div class="course-title">Курс 2: Продвинутый</div>
+            <div class="course-price">₽1499</div>
+            <div class="description" id="desc2">Описание: Глубокое погружение в тему. Практические задания и сертификат.</div>
+            <button class="open-btn" onclick="openCourse(2)">Открыть</button>
+        </div>
+
+        <div class="course-card">
+            <img src="https://via.placeholder.com/200x120?text=Курс+3" alt="Курс 3" class="course-image" onclick="toggleDesc(this)">
+            <div class="course-title">Курс 3: Специализация</div>
+            <div class="course-price">₽1999</div>
+            <div class="description" id="desc3">Описание: Для экспертов. Реальные кейсы и менторство.</div>
+            <button class="open-btn" onclick="openCourse(3)">Открыть</button>
+        </div>
+
+        <div class="course-card">
+            <img src="https://via.placeholder.com/200x120?text=Курс+4" alt="Курс 4" class="course-image" onclick="toggleDesc(this)">
+            <div class="course-title">Курс 4: Мастер-класс</div>
+            <div class="course-price">₽2499</div>
+            <div class="description" id="desc4">Описание: Эксклюзивный контент. Живые сессии и сообщество.</div>
+            <button class="open-btn" onclick="openCourse(4)">Открыть</button>
+        </div>
+
+        <!-- Пример добавленной 5-й карточки (для 3-й строки) -->
+        <div class="course-card">
+            <img src="https://via.placeholder.com/200x120?text=Курс+5" alt="Курс 5" class="course-image" onclick="toggleDesc(this)">
+            <div class="course-title">Курс 5: Экспертный</div>
+            <div class="course-price">₽2999</div>
+            <div class="description" id="desc5">Описание: Продвинутый уровень для профи. Замени на свой текст.</div>
+            <button class="open-btn" onclick="openCourse(5)">Открыть</button>
+        </div>
+
+        <div class="course-card">
+            <img src="https://via.placeholder.com/200x120?text=Курс+6" alt="Курс 6" class="course-image" onclick="toggleDesc(this)">
+            <div class="course-title">Курс 6: Финальный</div>
+            <div class="course-price">₽3499</div>
+            <div class="description" id="desc6">Описание: Полный курс с бонусами. Добавь детали.</div>
+            <button class="open-btn" onclick="openCourse(6)">Открыть</button>
+        </div>
+
+        <!-- Добавляй новые здесь, меняя номера 7,8... -->
+    </div>
+
+    <script>
+        // Массив уникальных ссылок для курсов (индекс = номер курса: 1,2,3...)
+        // Замени эти URL на свои реальные ссылки!
+        const courseLinks = [
+            '', // Не используется (индекс 0)
+            'https://example.com/course1.html',  // Курс 1
+            'https://example.com/course2.html',  // Курс 2
+            'https://example.com/course3.html',  // Курс 3
+            'https://example.com/course4.html',  // Курс 4
+            'https://example.com/course5.html',  // Курс 5
+            'https://example.com/course6.html',  // Курс 6
+            // Добавь больше: 'https://example.com/course7.html',  // Курс 7
+            // И т.д.
+        ];
+
+        // Функция для переключения изображения на описание (исправлена: теперь клик на открытое закрывает)
+        function toggleDesc(clickedImg) {
+            const card = clickedImg.closest('.course-card');
+            const desc = card.querySelector('.description');
+            const wasOpen = desc.classList.contains('show'); // Проверяем, было ли открыто ДО сброса
+            
+            // Сбрасываем ВСЕ карточки (закрываем все описания и возвращаем картинки)
+            const allCards = document.querySelectorAll('.course-card');
+            allCards.forEach(c => {
+                const i = c.querySelector('.course-image');
+                const d = c.querySelector('.description');
+                const t = c.querySelector('.course-title');
+                const num = t.textContent.match(/\d+/)[0];
+                i.src = `https://via.placeholder.com/200x120?text=Курс+${num}`;
+                i.classList.remove('desc-mode');
+                d.classList.remove('show');
+            });
+            
+            // Если ДОНА было закрыто — открываем эту
+            if (!wasOpen) {
+                clickedImg.src = 'https://via.placeholder.com/200x150?text=Описание';
+                clickedImg.classList.add('desc-mode');
+                desc.classList.add('show');
+            }
+            // Если было открыто — после сброса остаётся закрытым (ничего не делаем)
+        }
+
+        // Функция для открытия курса (теперь с уникальной ссылкой из массива)
+        function openCourse(num) {
+            if (courseLinks[num]) {
+                window.open(courseLinks[num], '_blank');  // Открывает уникальную ссылку в новой вкладке
+            } else {
+                alert(`Ссылка не задана для курса ${num}! Добавь в массив courseLinks.`);  // Для отладки
+            }
+        }
+    </script>
+</body>
+</html>
