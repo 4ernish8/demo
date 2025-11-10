@@ -2,38 +2,45 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Курсы</title>
     <style>
+        * {
+            box-sizing: border-box; /* Чтобы padding не ломал ширину */
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f4f4f4;
             color: #333;
+            overflow-x: hidden; /* Запрещаем горизонтальный скролл */
+        }
+        @media (max-width: 600px) {
+            body { padding: 10px; }
         }
         header {
             text-align: center;
             margin-bottom: 30px;
         }
         h1 {
-            color: #ff6b35; /* Оранжевый, как в Burger King */
-            font-size: 24px; /* Уменьшенный шрифт */
+            color: #ff6b35;
+            font-size: 24px;
             margin: 0 0 10px 0;
         }
         .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 колонки везде (десктоп и мобильный) */
-            gap: 15px;
+            display: grid !important; /* Принудительно для Telegram */
+            grid-template-columns: repeat(2, 1fr) !important; /* 2 колонки везде */
+            gap: 15px !important;
             max-width: 800px;
             margin: 0 auto;
+            width: 100%; /* Полная ширина */
         }
         @media (max-width: 600px) {
             .grid-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 в ряд на мобильных */
-                gap: 10px; /* Меньше отступов */
+                grid-template-columns: repeat(2, 1fr) !important; /* 2 в ряд на мобильных */
+                gap: 10px !important;
             }
-            body { padding: 10px; } /* Компактнее на мобиле */
         }
         .course-card {
             background: white;
@@ -42,13 +49,14 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
             transition: transform 0.2s;
-            cursor: pointer; /* Указывает на кликабельность */
+            cursor: pointer;
+            width: 100%; /* Полная ширина карточки */
         }
         .course-card:hover {
             transform: scale(1.05);
         }
         .course-card .open-btn:hover {
-            transform: none; /* Кнопка не масштабируется */
+            transform: none;
         }
         .course-image {
             width: 100%;
@@ -75,12 +83,15 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
+            display: block; /* Блочный элемент для центрирования */
+            margin: 0 auto; /* Центрирование */
+            width: auto; /* Автоширина */
         }
         .open-btn:hover {
             background: #e55a2b;
         }
         .description {
-            display: none; /* Скрыто в сетке, видно только в модалке */
+            display: none;
             margin-top: 10px;
             padding: 10px;
             background: #f9f9f9;
@@ -92,72 +103,76 @@
             display: block;
         }
 
-        /* Модальное окно */
+        /* Модальное окно (без изменений, но с !important для надёжности) */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5); /* Полупрозрачный overlay */
+            display: none !important;
+            position: fixed !important;
+            z-index: 1000 !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-color: rgba(0,0,0,0.5);
             animation: fadeIn 0.3s;
         }
         .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
+            background-color: white !important;
+            margin: 5% auto !important;
+            padding: 20px !important;
+            border-radius: 10px !important;
+            width: 90% !important;
+            max-width: 500px !important;
+            max-height: 90vh !important;
+            overflow-y: auto !important;
+            position: relative !important;
             animation: slideIn 0.3s;
         }
         @media (max-width: 600px) {
             .modal-content {
-                width: 95%;
-                margin: 2% auto;
-                max-height: 95vh;
-                padding: 15px;
+                width: 95% !important;
+                margin: 2% auto !important;
+                max-height: 95vh !important;
+                padding: 15px !important;
             }
         }
         .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            position: absolute;
-            right: 10px;
-            top: 5px;
+            color: #aaa !important;
+            float: right !important;
+            font-size: 28px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            position: absolute !important;
+            right: 10px !important;
+            top: 5px !important;
         }
         .close:hover {
-            color: #000;
+            color: #000 !important;
         }
         .modal-image {
-            width: 100%;
-            height: 200px; /* Увеличенная картинка в модалке */
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            width: 100% !important;
+            height: 200px !important;
+            object-fit: cover !important;
+            border-radius: 8px !important;
+            margin-bottom: 15px !important;
         }
         .modal-title {
-            font-size: 22px;
-            color: #ff6b35;
-            margin: 10px 0;
+            font-size: 22px !important;
+            color: #ff6b35 !important;
+            margin: 10px 0 !important;
         }
         .modal-price {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 15px;
+            font-size: 18px !important;
+            color: #666 !important;
+            margin-bottom: 15px !important;
         }
         .modal-description {
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+            margin-bottom: 20px !important;
+        }
+        #modalOpenBtn {
+            display: block !important;
+            margin: 0 auto !important; /* Центрирование кнопки в модалке */
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -236,7 +251,7 @@
             <div id="modalTitle" class="modal-title"></div>
             <div id="modalPrice" class="modal-price"></div>
             <div id="modalDescription" class="modal-description"></div>
-            <button id="modalOpenBtn" class="open-btn" onclick="handleOpenFromModal()">Открыть</button>
+            <button id="modalOpenBtn" class="open-btn">Открыть</button>
         </div>
     </div>
 
@@ -274,7 +289,7 @@
             document.getElementById('modalTitle').textContent = title.textContent;
             document.getElementById('modalPrice').textContent = price.textContent;
             document.getElementById('modalDescription').textContent = desc.textContent;
-            document.getElementById('modalOpenBtn').onclick = () => openCourse(num);
+            document.getElementById('modalOpenBtn').onclick = () => handleOpenFromModal();
 
             // Показываем модалку
             document.getElementById('courseModal').style.display = 'block';
