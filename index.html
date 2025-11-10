@@ -43,6 +43,11 @@
             text-align: center;
             transition: transform 0.2s;
             cursor: pointer; /* Указывает на кликабельность */
+            display: flex; /* Flexbox для выравнивания */
+            flex-direction: column; /* Вертикальное направление */
+            justify-content: space-between; /* Контент растягивается, кнопка внизу */
+            height: 100%; /* Полная высота карточки в сетке */
+            min-height: 280px; /* Минимальная высота для единообразия */
         }
         .course-card:hover {
             transform: scale(1.05);
@@ -61,6 +66,9 @@
             font-size: 18px;
             margin: 10px 0;
             color: #ff6b35;
+            flex-grow: 1; /* Заголовок растягивается, чтобы заполнить пространство */
+            display: flex;
+            align-items: center; /* Вертикальное центрирование в своём блоке */
         }
         .course-price {
             font-size: 16px;
@@ -77,6 +85,7 @@
             font-size: 14px;
             display: block; /* Для центрирования */
             margin: 0 auto; /* Центрирование кнопки */
+            align-self: center; /* Дополнительно для flex */
         }
         .open-btn:hover {
             background: #e55a2b;
