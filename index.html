@@ -24,9 +24,10 @@
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 колонки везде (десктоп и мобильный) */
-            gap: 15px;
+            gap: 15px; /* Интервал между карточками и рядами */
             max-width: 800px;
             margin: 0 auto;
+            align-items: start; /* Карточки не растягиваются по всей высоте ряда, если не нужно */
         }
         @media (max-width: 600px) {
             .grid-container {
@@ -43,11 +44,9 @@
             text-align: center;
             transition: transform 0.2s;
             cursor: pointer; /* Указывает на кликабельность */
-            display: flex; /* Flexbox для выравнивания */
+            display: flex; /* Flexbox внутри карточки */
             flex-direction: column; /* Вертикальное направление */
-            justify-content: space-between; /* Контент растягивается, кнопка внизу */
-            height: 100%; /* Полная высота карточки в сетке */
-            min-height: 280px; /* Минимальная высота для единообразия */
+            justify-content: space-between; /* Кнопка и цена внизу */
         }
         .course-card:hover {
             transform: scale(1.05);
@@ -66,14 +65,13 @@
             font-size: 18px;
             margin: 10px 0;
             color: #ff6b35;
-            flex-grow: 1; /* Заголовок растягивается, чтобы заполнить пространство */
-            display: flex;
-            align-items: center; /* Вертикальное центрирование в своём блоке */
+            flex-grow: 1; /* Заголовок заполняет доступное пространство */
         }
         .course-price {
             font-size: 16px;
             color: #666;
             margin-bottom: 15px;
+            align-self: flex-end; /* Цена выровнена по низу, если нужно */
         }
         .open-btn {
             background: #ff6b35;
@@ -85,7 +83,7 @@
             font-size: 14px;
             display: block; /* Для центрирования */
             margin: 0 auto; /* Центрирование кнопки */
-            align-self: center; /* Дополнительно для flex */
+            align-self: center; /* В flex — по центру снизу */
         }
         .open-btn:hover {
             background: #e55a2b;
