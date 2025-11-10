@@ -14,10 +14,12 @@
         }
         header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         h1 {
             color: #ff6b35; /* Оранжевый, как в Burger King */
+            font-size: 24px; /* Уменьшили шрифт заголовка */
+            margin: 0 0 10px 0;
         }
         .grid-container {
             display: grid;
@@ -38,16 +40,19 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
             transition: transform 0.2s;
+            cursor: pointer; /* Курсор указывает, что карточка кликабельна */
         }
         .course-card:hover {
             transform: scale(1.05);
+        }
+        .course-card .open-btn:hover {
+            transform: none; /* Кнопка не масштабируется при hover карточки */
         }
         .course-image {
             width: 100%;
             height: 120px;
             object-fit: cover;
             border-radius: 8px;
-            cursor: pointer;
             margin-bottom: 10px;
         }
         .course-image.desc-mode {
@@ -91,62 +96,62 @@
 </head>
 <body>
     <header>
-        <h1>Курсы "Инфоциган"</h1>
+        <h1>Курсы по [твоя тема]</h1>
         <p>Выберите курс и узнайте больше!</p>
     </header>
 
     <div class="grid-container" id="grid-container">
-        <!-- Карточки курсов: копируй этот блок для добавления новых -->
-        <div class="course-card">
-            <img src="img/course1.jpg" alt="Курс 1" class="course-image" onclick="toggleDesc(this)">
+        <!-- Карточки курсов: копируй этот блок для добавления новых. Картинки из img/course1.jpg и т.д. -->
+        <div class="course-card" onclick="handleCardClick(event, this)">
+            <img src="img/course1.jpg" alt="Курс 1" class="course-image">
             <div class="course-title">Курс 1: Основы</div>
-            <div class="course-price">₴999</div>
+            <div class="course-price">₽999</div>
             <div class="description" id="desc1">Описание: Этот курс научит вас основам. Длительность: 10 часов. Включает видео и тесты.</div>
-            <button class="open-btn" onclick="openCourse(1)">Купить</button>
+            <button class="open-btn" onclick="openCourse(1, event)">Открыть</button>
         </div>
 
-        <div class="course-card">
-            <img src="https://via.placeholder.com/200x120?text=Курс+2" alt="Курс 2" class="course-image" onclick="toggleDesc(this)">
+        <div class="course-card" onclick="handleCardClick(event, this)">
+            <img src="img/course2.jpg" alt="Курс 2" class="course-image">
             <div class="course-title">Курс 2: Продвинутый</div>
-            <div class="course-price">₴1499</div>
+            <div class="course-price">₽1499</div>
             <div class="description" id="desc2">Описание: Глубокое погружение в тему. Практические задания и сертификат.</div>
-            <button class="open-btn" onclick="openCourse(2)">Купить</button>
+            <button class="open-btn" onclick="openCourse(2, event)">Открыть</button>
         </div>
 
-        <div class="course-card">
-            <img src="https://via.placeholder.com/200x120?text=Курс+3" alt="Курс 3" class="course-image" onclick="toggleDesc(this)">
+        <div class="course-card" onclick="handleCardClick(event, this)">
+            <img src="img/course3.jpg" alt="Курс 3" class="course-image">
             <div class="course-title">Курс 3: Специализация</div>
-            <div class="course-price">₴1999</div>
+            <div class="course-price">₽1999</div>
             <div class="description" id="desc3">Описание: Для экспертов. Реальные кейсы и менторство.</div>
-            <button class="open-btn" onclick="openCourse(3)">Купить</button>
+            <button class="open-btn" onclick="openCourse(3, event)">Открыть</button>
         </div>
 
-        <div class="course-card">
-            <img src="https://via.placeholder.com/200x120?text=Курс+4" alt="Курс 4" class="course-image" onclick="toggleDesc(this)">
+        <div class="course-card" onclick="handleCardClick(event, this)">
+            <img src="img/course4.jpg" alt="Курс 4" class="course-image">
             <div class="course-title">Курс 4: Мастер-класс</div>
-            <div class="course-price">₴2499</div>
+            <div class="course-price">₽2499</div>
             <div class="description" id="desc4">Описание: Эксклюзивный контент. Живые сессии и сообщество.</div>
-            <button class="open-btn" onclick="openCourse(4)">Купить</button>
+            <button class="open-btn" onclick="openCourse(4, event)">Открыть</button>
         </div>
 
         <!-- Пример добавленной 5-й карточки (для 3-й строки) -->
-        <div class="course-card">
-            <img src="https://via.placeholder.com/200x120?text=Курс+5" alt="Курс 5" class="course-image" onclick="toggleDesc(this)">
+        <div class="course-card" onclick="handleCardClick(event, this)">
+            <img src="img/course5.jpg" alt="Курс 5" class="course-image">
             <div class="course-title">Курс 5: Экспертный</div>
-            <div class="course-price">₴2999</div>
+            <div class="course-price">₽2999</div>
             <div class="description" id="desc5">Описание: Продвинутый уровень для профи. Замени на свой текст.</div>
-            <button class="open-btn" onclick="openCourse(5)">Купить</button>
+            <button class="open-btn" onclick="openCourse(5, event)">Открыть</button>
         </div>
 
-        <div class="course-card">
-            <img src="https://via.placeholder.com/200x120?text=Курс+6" alt="Курс 6" class="course-image" onclick="toggleDesc(this)">
+        <div class="course-card" onclick="handleCardClick(event, this)">
+            <img src="img/course6.jpg" alt="Курс 6" class="course-image">
             <div class="course-title">Курс 6: Финальный</div>
-            <div class="course-price">₴3499</div>
+            <div class="course-price">₽3499</div>
             <div class="description" id="desc6">Описание: Полный курс с бонусами. Добавь детали.</div>
-            <button class="open-btn" onclick="openCourse(6)">Купить</button>
+            <button class="open-btn" onclick="openCourse(6, event)">Открыть</button>
         </div>
 
-        <!-- Добавляй новые здесь, меняя номера 7,8... -->
+        <!-- Добавляй новые здесь, меняя номера 7,8... и src="img/course7.jpg" -->
     </div>
 
     <script>
@@ -164,9 +169,32 @@
             // И т.д.
         ];
 
-        // Функция для переключения изображения на описание (исправлена: теперь клик на открытое закрывает)
-        function toggleDesc(clickedImg) {
-            const card = clickedImg.closest('.course-card');
+        // Массив картинок описаний (индекс = номер курса, из папки img/desc1.jpg и т.д.)
+        // Если у тебя нет отдельных desc-картинок, удали этот массив и строку img.src в JS (оставь только показ текста)
+        const descImages = [
+            '', // Не используется (индекс 0)
+            'img/desc1.jpg',  // Описание курса 1
+            'img/desc2.jpg',  // Курс 2
+            'img/desc3.jpg',
+            'img/desc4.jpg',
+            'img/desc5.jpg',
+            'img/desc6.jpg',
+            // Добавь больше по мере курсов
+        ];
+
+        // Функция для обработки клика на карточку (вызывается из onclick на .course-card)
+        function handleCardClick(event, card) {
+            // Если клик на кнопку "Открыть" — игнорируем (пусть сработает openCourse)
+            if (event.target.classList.contains('open-btn')) {
+                return; // Не toggleDesc, кнопка сработает отдельно
+            }
+            // Иначе — toggleDesc для этой карточки
+            toggleDesc(card);
+        }
+
+        // Функция для переключения изображения на описание (теперь от карточки, не от img)
+        function toggleDesc(card) {
+            const img = card.querySelector('.course-image');
             const desc = card.querySelector('.description');
             const wasOpen = desc.classList.contains('show'); // Проверяем, было ли открыто ДО сброса
             
@@ -177,22 +205,30 @@
                 const d = c.querySelector('.description');
                 const t = c.querySelector('.course-title');
                 const num = t.textContent.match(/\d+/)[0];
-                i.src = `https://via.placeholder.com/200x120?text=Курс+${num}`;
+                i.src = `img/course${num}.jpg`;  // Возвращаем исходную картинку из img/
                 i.classList.remove('desc-mode');
                 d.classList.remove('show');
             });
             
             // Если ДОНА было закрыто — открываем эту
             if (!wasOpen) {
-                clickedImg.src = 'https://via.placeholder.com/200x150?text=Описание';
-                clickedImg.classList.add('desc-mode');
+                const title = card.querySelector('.course-title');
+                const num = title.textContent.match(/\d+/)[0];
+                if (descImages[num]) {
+                    img.src = descImages[num];  // Меняем на картинку описания, если есть
+                } else {
+                    // Если нет desc-картинки — просто показываем текст без смены img
+                    console.log(`Нет картинки описания для курса ${num}, показываем только текст`);
+                }
+                img.classList.add('desc-mode');
                 desc.classList.add('show');
             }
             // Если было открыто — после сброса остаётся закрытым (ничего не делаем)
         }
 
-        // Функция для открытия курса (теперь с уникальной ссылкой из массива)
-        function openCourse(num) {
+        // Функция для открытия курса (теперь с event для stopPropagation, чтобы не срабатывал toggleDesc)
+        function openCourse(num, event) {
+            event.stopPropagation();  // Останавливаем всплытие события, чтобы не кликнуло на карточку
             if (courseLinks[num]) {
                 window.open(courseLinks[num], '_blank');  // Открывает уникальную ссылку в новой вкладке
             } else {
