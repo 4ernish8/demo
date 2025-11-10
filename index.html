@@ -24,10 +24,9 @@
         .grid-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 колонки везде (десктоп и мобильный) */
-            gap: 15px; /* Интервал между карточками и рядами */
+            gap: 15px;
             max-width: 800px;
             margin: 0 auto;
-            align-items: start; /* Карточки не растягиваются по всей высоте ряда, если не нужно */
         }
         @media (max-width: 600px) {
             .grid-container {
@@ -44,9 +43,6 @@
             text-align: center;
             transition: transform 0.2s;
             cursor: pointer; /* Указывает на кликабельность */
-            display: flex; /* Flexbox внутри карточки */
-            flex-direction: column; /* Вертикальное направление */
-            justify-content: space-between; /* Кнопка и цена внизу */
         }
         .course-card:hover {
             transform: scale(1.05);
@@ -65,13 +61,11 @@
             font-size: 18px;
             margin: 10px 0;
             color: #ff6b35;
-            flex-grow: 1; /* Заголовок заполняет доступное пространство */
         }
         .course-price {
             font-size: 16px;
             color: #666;
             margin-bottom: 15px;
-            align-self: flex-end; /* Цена выровнена по низу, если нужно */
         }
         .open-btn {
             background: #ff6b35;
@@ -83,7 +77,6 @@
             font-size: 14px;
             display: block; /* Для центрирования */
             margin: 0 auto; /* Центрирование кнопки */
-            align-self: center; /* В flex — по центру снизу */
         }
         .open-btn:hover {
             background: #e55a2b;
@@ -193,49 +186,49 @@
         <div class="course-card" onclick="openModal(this)">
             <img src="img/course1.jpg" alt="Курс 1" class="course-image">
             <div class="course-title">Курс 1: Основы</div>
-            <div class="course-price">₽999</div>
+            <div class="course-price">999 ₴</div>
             <div class="description" id="desc1">Описание: Этот курс научит вас основам. Длительность: 10 часов. Включает видео и тесты.</div>
-            <button class="open-btn" onclick="openCourse(1, event)">Открыть</button>
+            <button class="open-btn" onclick="openCourse(1, event)">Купить</button>
         </div>
 
         <div class="course-card" onclick="openModal(this)">
             <img src="img/course2.jpg" alt="Курс 2" class="course-image">
             <div class="course-title">Курс 2: Продвинутый</div>
-            <div class="course-price">₽1499</div>
+            <div class="course-price">1499 ₴</div>
             <div class="description" id="desc2">Описание: Глубокое погружение в тему. Практические задания и сертификат.</div>
-            <button class="open-btn" onclick="openCourse(2, event)">Открыть</button>
+            <button class="open-btn" onclick="openCourse(2, event)">Купить</button>
         </div>
 
         <div class="course-card" onclick="openModal(this)">
             <img src="img/course3.jpg" alt="Курс 3" class="course-image">
             <div class="course-title">Курс 3: Специализация</div>
-            <div class="course-price">₽1999</div>
+            <div class="course-price">1999 ₴</div>
             <div class="description" id="desc3">Описание: Для экспертов. Реальные кейсы и менторство.</div>
-            <button class="open-btn" onclick="openCourse(3, event)">Открыть</button>
+            <button class="open-btn" onclick="openCourse(3, event)">Купить</button>
         </div>
 
         <div class="course-card" onclick="openModal(this)">
             <img src="img/course4.jpg" alt="Курс 4" class="course-image">
             <div class="course-title">Курс 4: Мастер-класс</div>
-            <div class="course-price">₽2499</div>
+            <div class="course-price">2499 ₴</div>
             <div class="description" id="desc4">Описание: Эксклюзивный контент. Живые сессии и сообщество.</div>
-            <button class="open-btn" onclick="openCourse(4, event)">Открыть</button>
+            <button class="open-btn" onclick="openCourse(4, event)">Купить</button>
         </div>
 
         <div class="course-card" onclick="openModal(this)">
             <img src="img/course5.jpg" alt="Курс 5" class="course-image">
             <div class="course-title">Курс 5: Экспертный</div>
-            <div class="course-price">₽2999</div>
+            <div class="course-price">2999 ₴</div>
             <div class="description" id="desc5">Описание: Продвинутый уровень для профи. Замени на свой текст.</div>
-            <button class="open-btn" onclick="openCourse(5, event)">Открыть</button>
+            <button class="open-btn" onclick="openCourse(5, event)">Купить</button>
         </div>
 
         <div class="course-card" onclick="openModal(this)">
             <img src="img/course6.jpg" alt="Курс 6" class="course-image">
             <div class="course-title">Курс 6: Финальный</div>
-            <div class="course-price">₽3499</div>
+            <div class="course-price">3499 ₴</div>
             <div class="description" id="desc6">Описание: Полный курс с бонусами. Добавь детали.</div>
-            <button class="open-btn" onclick="openCourse(6, event)">Открыть</button>
+            <button class="open-btn" onclick="openCourse(6, event)">Купить</button>
         </div>
 
         <!-- Добавляй новые: onclick="openModal(this)", src="img/course7.jpg" -->
@@ -249,7 +242,7 @@
             <div id="modalTitle" class="modal-title"></div>
             <div id="modalPrice" class="modal-price"></div>
             <div id="modalDescription" class="modal-description"></div>
-            <button id="modalOpenBtn" class="open-btn" onclick="handleOpenFromModal()">Открыть</button>
+            <button id="modalOpenBtn" class="open-btn" onclick="handleOpenFromModal()">Купить</button>
         </div>
     </div>
 
