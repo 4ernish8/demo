@@ -7,8 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
+            margin: 0; /* Общий отступ страницы от краёв экрана — редактируй для глобального spacing */
+            padding: 20px; /* Общий padding страницы — уменьши для более компактного вида на мобильных */
             background-color: #f4f4f4;
             color: #333;
             display: flex;
@@ -19,53 +19,83 @@
         .course-card {
             background: white;
             border-radius: 10px;
-            padding: 20px;
+            padding: 20px; /* Внутренний отступ карточки от её границ — редактируй для расстояния от краёв карточки до контента */
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
             max-width: 300px; /* Один квадрат, компактный */
             width: 100%;
+            position: relative; /* Добавлено для позиционирования расширенного описания относительно карточки */
         }
         .course-image {
             width: 100%;
             height: 200px; /* Увеличено для одного элемента */
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 5px; /* ИЗМЕНЕНО: Было 15px — расстояние СНИЗУ картинки ДО заголовка. Уменьши/увеличь здесь для настройки */
+            display: block; /* Обеспечивает правильный рендеринг изображения */
         }
         .course-title {
             font-size: 20px;
-            margin: 10px 0;
+            margin: 10px 0; /* Вертикальное расстояние ВЫШЕ и НИЖЕ заголовка: 10px сверху и снизу. Редактируй для spacing между заголовком и соседними элементами */
             color: #d63e18;
         }
         .course-price {
             font-size: 18px;
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 15px; /* Расстояние СНИЗУ цены ДО описания. Уменьши, если хочешь ближе */
         }
         .description {
-            margin-bottom: 20px;
-            padding: 10px;
+            margin-bottom: 20px; /* Расстояние СНИЗУ описания ДО кнопок. Редактируй для spacing перед кнопками */
+            padding: 10px; /* Внутренний отступ внутри описания — редактируй для spacing текста от границ блока описания */
             background: #f9f9f9;
             border-radius: 5px;
             font-size: 14px;
             line-height: 1.4;
             display: block; /* Видимое описание */
+            cursor: pointer; /* Добавлено: Курсор "рука" при наведении, чтобы показать, что кликабельно */
+            transition: all 0.3s ease; /* Плавная анимация для изменений (расширение/сжатие) */
+        }
+        .description:hover {
+            background: #f0f0f0; /* Лёгкий hover-эффект для интерактивности */
+        }
+        /* НОВОЕ: Скрытая длинная версия описания — перекрывает картинку при клике */
+        .description-long {
+            display: none; /* По умолчанию скрыто */
+            position: absolute; /* Абсолютное позиционирование для overlay */
+            top: 0; /* Прижимается к верху карточки, перекрывая картинку */
+            left: 0;
+            right: 0;
+            background: rgba(249, 249, 249, 0.95); /* Полупрозрачный фон для наложения */
+            padding: 20px; /* Увеличенный внутренний отступ для длинного текста */
+            border-radius: 5px;
+            font-size: 14px;
+            line-height: 1.5;
+            z-index: 10; /* Выше картинки, но ниже кнопок */
+            max-height: 250px; /* Ограничивает высоту, чтобы не перекрывать кнопки (адаптируй под свою картинку) */
+            overflow-y: auto; /* Скролл, если текст очень длинный */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .description-long:hover {
+            background: rgba(240, 240, 240, 0.95);
         }
         .buttons-container {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* Вертикальный стек кнопок */
+            gap: 10px; /* Вертикальный стек кнопок: расстояние МЕЖДУ кнопками. Уменьши для ближе */
+            position: relative; /* Обеспечивает, что кнопки всегда сверху z-index расширенного описания */
+            z-index: 20; /* Кнопки всегда на переднем плане */
         }
         .btn {
             border: none;
-            padding: 12px 20px;
+            padding: 12px 20px; /* Внутренний отступ кнопки: 12px сверху/снизу, 20px слева/справа — редактируй для размера кнопки */
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px; /* Расстояние между иконкой и текстом */
+            gap: 8px; /* Расстояние между иконкой и текстом в кнопке */
             text-decoration: none;
             color: white;
         }
@@ -86,8 +116,15 @@
             height: 20px;
         }
         @media (max-width: 600px) {
-            body { padding: 10px; }
-            .course-card { padding: 15px; }
+            body { 
+                padding: 10px; /* Мобильный: Уменьшенный общий padding страницы */
+            }
+            .course-card { 
+                padding: 15px; /* Мобильный: Уменьшенный padding карточки */
+            }
+            .description, .description-long {
+                padding: 8px; /* Мобильный: Уменьшенный padding описания для экономии места */
+            }
         }
     </style>
 </head>
@@ -97,7 +134,21 @@
         <img src="img/1.jpg" alt="Вигорання" class="course-image">
         <div class="course-title">У вас виражене вигорання</div>
         <div class="course-price" id="score-display">У вас 0 з 200 балів</div>
-        <div class="description">Ви можете записатися до мене на консультацію щоб усунути цю проблемму. Записатися можна одним з наданих нижче способів.</div>
+        
+        <!-- Короткая версия описания (по умолчанию видимая) -->
+        <div class="description" id="short-description">
+            Ви можете записатися до мене на консультацію щоб усунути цю проблемму. Записатися можна одним з наданих нижче способів.
+        </div>
+        
+        <!-- НОВОЕ: Длинная версия описания (скрытая, появляется при клике) -->
+        <div class="description-long" id="long-description">
+            Ви можете записатися до мене на консультацію щоб усунути цю проблему. Ось детальніше про те, як це працює:<br><br>
+            1. <strong>Перша консультація:</strong> Ми обговоримо ваші симптоми вигорання, оцінимо рівень стресу та складемо персональний план відновлення.<br>
+            2. <strong>Методики:</strong> Використовуємо когнітивно-поведінкову терапію, релаксаційні техніки (медитація, дихальні вправи) та практичні поради для балансу роботи та життя.<br>
+            3. <strong>Тривалість:</strong> 45-60 хвилин на сесію, онлайн через Telegram або Zoom.<br>
+            4. <strong>Ціна:</strong> 500 грн за сесію (перша — з 20% знижкою).<br><br>
+            Клікніть ще раз, щоб повернутися до короткої версії. Записатися нижче!
+        </div>
         
         <div class="buttons-container">
             <a href="https://t.me/Stec0407" target="_blank" class="btn telegram-btn">
@@ -129,8 +180,30 @@
             }
         }
 
-        // Вызываем при загрузке страницы
-        document.addEventListener('DOMContentLoaded', updateScoreDisplay);
+        // НОВОЕ: Логика для переключения короткого/длинного описания
+        function toggleDescription() {
+            const shortDesc = document.getElementById('short-description');
+            const longDesc = document.getElementById('long-description');
+            
+            if (shortDesc.style.display === 'none') {
+                // Возврат к короткой: скрыть длинную, показать короткую
+                longDesc.style.display = 'none';
+                shortDesc.style.display = 'block';
+            } else {
+                // Показать длинную: скрыть короткую, показать overlay
+                shortDesc.style.display = 'none';
+                longDesc.style.display = 'block';
+            }
+        }
+
+        // Привязка клика к короткому описанию (длинное тоже кликабельно, т.к. cursor: pointer)
+        document.addEventListener('DOMContentLoaded', function() {
+            updateScoreDisplay();
+            const shortDesc = document.getElementById('short-description');
+            const longDesc = document.getElementById('long-description');
+            shortDesc.addEventListener('click', toggleDescription);
+            longDesc.addEventListener('click', toggleDescription); // Для возврата
+        });
     </script>
 </body>
 </html>
