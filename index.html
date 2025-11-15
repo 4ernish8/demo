@@ -72,9 +72,21 @@
             display: block; /* Видимое описание */
             transition: all 0.3s ease; /* Плавная анимация для изменений (длительность 0.3s). Измени '0.3s' на '0.5s' для медленнее */
             font-family: Arial, sans-serif; /* Шрифт для короткого описания (глобальный по умолчанию). Измени на 'Verdana, sans-serif' для другого */
+            position: relative; /* НОВОЕ: Для позиционирования SVG */
+            overflow: hidden; /* НОВОЕ: Чтобы обрезать свечение при необходимости */
         }
         .description:hover {
             background: #f0f0f0; /* Лёгкий hover-эффект для интерактивности */
+        }
+        /* НОВОЕ: SVG для движущегося свечения */
+        .glow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
         /* ОБНОВЛЕНО: Скрытая длинная версия — стартует на позиции short и "раскрывается" вверх + вниз */
         .description-long {
@@ -205,11 +217,32 @@
         <div class="description-container" id="desc-container"> <!-- ФИКС: id для JS -->
             <!-- Короткая версия описания (по умолчанию видимая) -->
             <div class="description" id="short-description">
+                <!-- НОВОЕ: SVG для движущегося оранжевого свечения по контуру (мягкое неоновое, по часовой стрелке, цикл 1s с лёгкими паузами ~0.05s на углах) -->
+                <svg class="glow-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <defs>
+                        <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+                            <feMerge>
+                                <feMergeNode in="blur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <rect x="0" y="0" width="100" height="100" rx="2" ry="2" fill="none" stroke="#d63e18" stroke-width="3"
+                          filter="url(#neon-glow)"
+                          stroke-dasharray="200 200">
+                        <animate attributeName="stroke-dashoffset"
+                                 dur="0.8s"
+                                 repeatCount="indefinite"
+                                 calcMode="linear"
+                                 values="0; -100; -100; -200; -200; -300; -300; -400; -400"
+                                 keyTimes="0; 0.225; 0.25; 0.475; 0.5; 0.725; 0.75; 0.975; 1"/>
+                    </rect>
+                </svg>
                 Виражене вигорання — це стан сильного емоційного, фізичного та розумового виснаження, що виникає через хронічний стрес, найчастіше пов'язаний з роботою, але також зустрічається в особистому житті.<br>
                 <span style="display: block; text-align: center; font-weight: bold;">
                     <em><u>Натисни для рекомендацій</u></em>
                 </span>
-                 
             </div>
             
             <!-- Длинная версия описания (скрытая, появляется при клике) -->
