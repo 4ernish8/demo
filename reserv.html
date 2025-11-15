@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Виражене вигорання</title>
-    <!-- НОВОЕ: Подключение Dela Gothic One из Google Fonts (preconnect для оптимизации) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif; /* Глобальный шрифт для всего документа. Измени на 'Georgia, serif' для засечкового по умолчанию */
+            font-family: Arial, sans-serif;
             margin: 0; /* Общий отступ страницы от краёв экрана — редактируй для глобального spacing */
             padding: 20px; /* Общий padding страницы — уменьши для более компактного вида на мобильных */
             background-color: #f4f4f4;
@@ -40,20 +36,19 @@
             border-radius: 8px;
             margin-bottom: 5px; /* Расстояние СНИЗУ картинки ДО заголовка. Уменьши/увеличь здесь для настройки */
             display: block; /* Обеспечивает правильный рендеринг изображения */
-            transition: opacity 0.4s ease-in-out; /* Плавная анимация прозрачности картинки (длительность 0.4s). Измени '0.4s' на '0.6s' для медленнее */
+            transition: opacity 0.4s ease-in-out; /* ФИКС: Плавная анимация прозрачности картинки (длительность 0.4s). Измени '0.4s' на '0.6s' для медленнее, или 'ease' на 'linear' для равномерности */
         }
         .course-title {
             font-size: 20px;
             margin: 10px 0; /* Вертикальное расстояние ВЫШЕ и НИЖЕ заголовка: 10px сверху и снизу. Редактируй для spacing между заголовком и соседними элементами */
             color: #d63e18;
-            font-family: Arial, sans-serif; /* Шрифт для заголовка (глобальный по умолчанию). Измени на 'Impact, sans-serif' для жирного */
         }
         .course-price {
             font-size: 18px;
             color: #666;
             margin-bottom: 15px; /* Расстояние СНИЗУ цены ДО описания. Уменьши, если хочешь ближе */
             transition: opacity 0.4s ease-in-out; /* Плавная анимация прозрачности баллов (длительность 0.4s). Измени '0.4s' на '0.3s' для быстрее */
-            font-family: "Dela Gothic One", sans-serif; /* НОВОЕ: Шрифт Dela Gothic One для баллов (из Google Fonts). Fallback — sans-serif. Можно добавить font-weight: 400; если нужно */
+            /*font-family: 'Roboto', Arial, sans-serif; /* НОВОЕ: Шрифт для баллов. 'Roboto' — основной, Arial — fallback (если не загрузится). Измени на 'Georgia, serif' для засечкового шрифта, или 'Courier New, monospace' для моноширинного */
         }
         /* ФИКС: Контейнер для описания с увеличенной мин. высотой, чтобы карточка не сжималась */
         .description-container {
@@ -67,10 +62,9 @@
             border-radius: 5px;
             font-size: 14px; /* Размер шрифта короткого описания. Измени на '16px' для больше */
             line-height: 1.4;
-            text-align: left; /* Выравнивание текста короткого описания. Измени на 'right' для правого, 'center' для по центру */
+            text-align: left; /* НОВОЕ: Выравнивание текста короткого описания. Измени на 'right' для правого, 'center' для по центру, 'justify' для по ширине */
             display: block; /* Видимое описание */
             transition: all 0.3s ease; /* Плавная анимация для изменений (длительность 0.3s). Измени '0.3s' на '0.5s' для медленнее */
-            font-family: Arial, sans-serif; /* Шрифт для короткого описания (глобальный по умолчанию). Измени на 'Verdana, sans-serif' для другого */
         }
         .description:hover {
             background: #f0f0f0; /* Лёгкий hover-эффект для интерактивности */
@@ -86,19 +80,18 @@
             background: rgba(249, 249, 249, 0.95); /* Полупрозрачный фон для наложения. Измени '0.95' на '1' для непрозрачного */
             padding: 10px; /* Начальный padding как у short */
             border-radius: 5px;
-            font-size: 14px; /* Размер шрифта длинного описания. Измени на '12px' для меньше, или '16px' для больше */
+            font-size: 14px; /* ФИКС: Размер шрифта длинного описания. Измени на '12px' для меньше, или '16px' для больше */
             line-height: 1.5; /* Межстрочный интервал. Измени на '1.2' для компактнее */
-            text-align: left; /* Выравнивание текста по левому краю. Измени на 'right' для правого, 'center' для по центру, 'justify' для по ширине */
+            text-align: left; /* ФИКС: Выравнивание текста по левому краю. Измени на 'right' для правого, 'center' для по центру, 'justify' для по ширине */
             z-index: 15; /* Выше всего (картинка/текст), но ниже кнопок */
             overflow-y: auto; /* Скролл для длинного текста */
-            transition: all 0.4s ease-in-out; /* Длительность анимации раскрытия (0.4s). Измени '0.4s' на '0.6s' для медленнее; 'ease-in-out' на 'ease-out' для ускорения в конце */
+            transition: all 0.4s ease-in-out; /* ФИКС: Длительность анимации раскрытия (0.4s). Измени '0.4s' на '0.6s' для медленнее; 'ease-in-out' на 'ease-out' для ускорения в конце */
             opacity: 1; /* Виден сразу */
-            font-family: Arial, sans-serif; /* Шрифт для длинного описания (глобальный по умолчанию). Измени на '"Dela Gothic One", sans-serif' для такого же как у баллов */
         }
         .description-long.active { 
             /* Класс для активации: "ползёт" вверх и расширяется вниз */
-            top: -320px; /* Конечная позиция вверх (до верха картинки: image 200px + title/price/margins ~120px). Измени на '-300px' для меньше покрытия, '-350px' для больше */
-            max-height: 450px; /* Конечная высота (для полного текста без скролла). Измени на '500px' для больше пространства, '350px' для меньше */
+            top: -320px; /* ФИКС: Конечная позиция вверх (до верха картинки: image 200px + title/price/margins ~120px). Измени на '-300px' для меньше покрытия, '-350px' для больше */
+            max-height: 450px; /* ФИКС: Конечная высота (для полного текста без скролла). Измени на '500px' для больше пространства, '350px' для меньше */
             padding: 20px; /* Увеличивается padding для длинного текста. Измени на '15px' для компактнее */
             opacity: 1;
         }
@@ -136,7 +129,6 @@
             gap: 8px; /* Расстояние между иконкой и текстом в кнопке */
             text-decoration: none;
             color: white;
-            font-family: Arial, sans-serif; /* Шрифт для кнопок (глобальный). Измени на '"Dela Gothic One", sans-serif' если нужно */
         }
         .telegram-btn {
             background: #0088cc; /* Цвет Telegram */
@@ -196,7 +188,7 @@
             
             <!-- Длинная версия описания (скрытая, появляется при клике) -->
             <div class="description-long" id="long-description">
-                Ось детальніше про те, як це працює:<br><br>
+                Ви можете записатися до мене на консультацію щоб усунути цю проблему. Ось детальніше про те, як це працює:<br><br>
                 1. <strong>Перша консультація:</strong> Ми обговоримо ваші симптоми вигорання, оцінимо рівень стресу та складемо персональний план відновлення.<br>
                 2. <strong>Методики:</strong> Використовуємо когнітивно-поведінкову терапію, релаксаційні техніки (медитація, дихальні вправи) та практичні поради для балансу роботи та життя.<br>
                 3. <strong>Тривалість:</strong> 45-60 хвилин на сесію, онлайн через Telegram або Zoom.<br>
