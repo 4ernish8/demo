@@ -155,36 +155,6 @@
             overflow: hidden; /* ФИКС: Скрывает переполнение текста */
             text-overflow: ellipsis; /* ФИКС: ... если текст длинный */
             flex-wrap: nowrap; /* ФИКС: Не переносит flex-элементы (иконка + текст) */
-            position: relative; /* НОВОЕ: Для позиционирования блика */
-        }
-        /* НОВОЕ: Анимация горизонтального блика (shine) на кнопках */
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%; /* Стартует слева за кнопкой */
-            width: 50%; /* Ширина блика — половина кнопки для компактности */
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent); /* Горизонтальный градиент для блика */
-            transition: left 0s; /* Плавное движение без задержки */
-            z-index: 1; /* Над фоном, но под текстом */
-            pointer-events: none; /* Не мешает кликам */
-        }
-        .btn.shine::before {
-            animation: horizontalShine 2s ease-in-out infinite; /* Длительность 2s, бесконечно, с easing для плавности */
-        }
-        /* Анимация блика: от лева к праву */
-        @keyframes horizontalShine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        /* Первая кнопка (Telegram) — стартует сразу */
-        .telegram-btn.shine::before {
-            animation-delay: 0s;
-        }
-        /* Вторая кнопка (Direct) — задержка на 1s (половина цикла), чтобы по очереди */
-        .direct-btn.shine::before {
-            animation-delay: 1s;
         }
         .telegram-btn {
             background: #0088cc; /* Цвет Telegram */
@@ -288,11 +258,11 @@
         </div>
         
         <div class="buttons-container">
-            <a href="https://t.me/Stec0407" target="_blank" class="btn telegram-btn shine">
+            <a href="https://t.me/Stec0407" target="_blank" class="btn telegram-btn">
                 <img src="img/telegram-icon.png" alt="Telegram" class="icon">
                 Запис на консультацію
             </a>
-            <a href="https://ig.me/m/stetsurina.irina_coach" target="_blank" class="btn direct-btn shine">
+            <a href="https://ig.me/m/stetsurina.irina_coach" target="_blank" class="btn direct-btn">
                 <img src="img/instagram-icon.png" alt="Instagram" class="icon">
                 Запис на консультацію
             </a>

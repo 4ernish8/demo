@@ -155,36 +155,6 @@
             overflow: hidden; /* ФИКС: Скрывает переполнение текста */
             text-overflow: ellipsis; /* ФИКС: ... если текст длинный */
             flex-wrap: nowrap; /* ФИКС: Не переносит flex-элементы (иконка + текст) */
-            position: relative; /* НОВОЕ: Для позиционирования блика */
-        }
-        /* НОВОЕ: Анимация горизонтального блика (shine) на кнопках */
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%; /* Стартует слева за кнопкой */
-            width: 50%; /* Ширина блика — половина кнопки для компактности */
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent); /* Горизонтальный градиент для блика */
-            transition: left 0s; /* Плавное движение без задержки */
-            z-index: 1; /* Над фоном, но под текстом */
-            pointer-events: none; /* Не мешает кликам */
-        }
-        .btn.shine::before {
-            animation: horizontalShine 2s ease-in-out infinite; /* Длительность 2s, бесконечно, с easing для плавности */
-        }
-        /* Анимация блика: от лева к праву */
-        @keyframes horizontalShine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        /* Первая кнопка (Telegram) — стартует сразу */
-        .telegram-btn.shine::before {
-            animation-delay: 0s;
-        }
-        /* Вторая кнопка (Direct) — задержка на 1s (половина цикла), чтобы по очереди */
-        .direct-btn.shine::before {
-            animation-delay: 1s;
         }
         .telegram-btn {
             background: #0088cc; /* Цвет Telegram */
@@ -216,21 +186,21 @@
                 min-height: 540px; /* ФИКС: Мобильный: Увеличена мин. высота (было 520px) под новый текст */
             }
             .description-container {
-                min-height: 110px; /* ФИКС: Мобильный: Под твой текст */
+                min-height: 110px; /* ФИКС: Мобильний: Под твой текст */
             }
             .description-container, .description, .description-long {
                 padding: 8px; /* Мобильный: Уменьшенный padding описания для экономии места */
             }
             .description-long.active {
-                top: -280px; /* Мобильный: Конечная позиция вверх (компактнее). Измени на '-260px' для меньше покрытия */
-                max-height: 400px; /* Мобильный: Конечная высота. Измени на '450px' для больше */
-                padding: 15px; /* Мобильный: Средний padding */
+                top: -280px; /* Мобильний: Конечная позиция вверх (компактнее). Измени на '-260px' для меньше покрытия */
+                max-height: 400px; /* Мобильний: Конечная высота. Измени на '450px' для больше */
+                padding: 15px; /* Мобильний: Средний padding */
             }
             .buttons-container {
-                bottom: 15px; /* Мобильный: Меньший отступ от низа */
+                bottom: 15px; /* Мобильний: Меньший отступ от низа */
             }
             .btn {
-                padding: 10px 16px; /* ФИКС: Мобильный: Компактнее кнопки под длинный текст */
+                padding: 10px 16px; /* ФИКС: Мобильний: Компактнее кнопки под длинный текст */
                 font-size: 13px; /* ФИКС: Меньше шрифт на мобиле, чтобы текст влез */
             }
         }
@@ -247,7 +217,7 @@
         <div class="description-container" id="desc-container"> <!-- ФИКС: id для JS -->
             <!-- Короткая версия описания (по умолчанию видимая) -->
             <div class="description" id="short-description">
-                <!-- НОВОЕ: SVG для движущегося оранжевого свечения по контуру (мягкое неоновое, по часовой стрелке, цикл 5s БЕЗ пауз на углах — постоянная скорость) -->
+                <!-- НОВОЕ: SVG для пульсирующего неонового свечения по всей границе (плавное появление из 0, удержание, затухание до 0, цикл 5s) -->
                 <svg class="glow-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
                     <defs>
                         <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
@@ -260,14 +230,14 @@
                     </defs>
                     <rect x="0" y="0" width="100" height="100" rx="2" ry="2" fill="none" stroke="#d63e18" stroke-width="3"
                           filter="url(#neon-glow)"
-                          stroke-dasharray="50 350">
-                        <!-- ФИКС: Упрощена анимация для постоянной скорости (без пауз на углах): линейное движение от 0 до -400 за dur=5s, повтор бесконечно. Не трогай values/keyTimes — они теперь простые для равномерности. -->
-                        <animate attributeName="stroke-dashoffset"
+                          stroke-opacity="0"> <!-- Стартует с opacity=0 для плавного появления -->
+                        <!-- АНИМАЦИЯ: Плавное появление (0->1 за 1s), удержание (1 за 2s), затухание (1->0 за 1s), пауза (0 за 1s), цикл 5s. Измени dur="5s" для скорости, values для тайминга. -->
+                        <animate attributeName="stroke-opacity"
                                  dur="5s"
                                  repeatCount="indefinite"
                                  calcMode="linear"
-                                 values="0; -400"
-                                 keyTimes="0; 1"/>
+                                 values="0;1;1;0;0"
+                                 keyTimes="0;0.2;0.6;0.8;1"/>
                     </rect>
                 </svg>
                 Виражене вигорання — це стан сильного емоційного, фізичного та розумового виснаження, що виникає через хронічний стрес, найчастіше пов'язаний з роботою, але також зустрічається в особистому житті.<br>
@@ -288,11 +258,11 @@
         </div>
         
         <div class="buttons-container">
-            <a href="https://t.me/Stec0407" target="_blank" class="btn telegram-btn shine">
+            <a href="https://t.me/Stec0407" target="_blank" class="btn telegram-btn">
                 <img src="img/telegram-icon.png" alt="Telegram" class="icon">
                 Запис на консультацію
             </a>
-            <a href="https://ig.me/m/stetsurina.irina_coach" target="_blank" class="btn direct-btn shine">
+            <a href="https://ig.me/m/stetsurina.irina_coach" target="_blank" class="btn direct-btn">
                 <img src="img/instagram-icon.png" alt="Instagram" class="icon">
                 Запис на консультацію
             </a>
