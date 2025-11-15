@@ -30,7 +30,7 @@
             max-width: 300px; /* Один квадрат, компактный */
             width: 100%;
             position: relative; /* Для позиционирования расширенного описания относительно карточки */
-            min-height: 550px; /* Минимальная высота карточки, чтобы она не сжималась. Адаптируй под контент (учитывая image + buttons) */
+            min-height: 600px; /* ФИКС: Увеличена минимальная высота карточки под новый текст (было 580px). Адаптируй под контент (учитывая image + buttons + длинный short) */
             cursor: pointer; /* Курсор "рука" по всей карточке для интерактивности */
         }
         .course-image {
@@ -57,9 +57,10 @@
         }
         /* ФИКС: Контейнер для описания с увеличенной мин. высотой, чтобы карточка не сжималась */
         .description-container {
-            min-height: 100px; /* Placeholder высота для short (учитывая padding + текст), чтобы при скрытии long не было сдвига */
+            min-height: 120px; /* ФИКС: Placeholder под новый короткий текст (~4-5 строк). JS подхватит динамически */
             margin-bottom: 20px; /* Расстояние СНИЗУ контейнера ДО кнопок. Редактируй для spacing перед кнопками */
             position: relative; /* Для позиционирования long внутри */
+            transition: min-height 0.4s ease-in-out; /* ФИКС: Плавная анимация изменения min-height (синхронно с остальной анимацией). Измени '0.4s' на '0.2s' для быстрее */
         }
         .description {
             padding: 10px; /* Внутренний отступ внутри описания — редактируй для spacing текста от границ блока описания */
@@ -89,7 +90,7 @@
             font-size: 14px; /* Размер шрифта длинного описания. Измени на '12px' для меньше, или '16px' для больше */
             line-height: 1.5; /* Межстрочный интервал. Измени на '1.2' для компактнее */
             text-align: left; /* Выравнивание текста по левому краю. Измени на 'right' для правого, 'center' для по центру, 'justify' для по ширине */
-            z-index: 15; /* Выше всего (картинка/текст), но ниже кнопок */
+            z-index: 10; /* ФИКС: Уменьшен z-index (было 15), чтобы не конфликтовать с кнопками (20). Long overlay'ит только верх */
             overflow-y: auto; /* Скролл для длинного текста */
             transition: all 0.4s ease-in-out; /* Длительность анимации раскрытия (0.4s). Измени '0.4s' на '0.6s' для медленнее; 'ease-in-out' на 'ease-out' для ускорения в конце */
             opacity: 1; /* Виден сразу */
@@ -122,7 +123,8 @@
             gap: 10px; /* Вертикальный стек кнопок: расстояние МЕЖДУ кнопками. Уменьши для ближе */
             position: sticky; /* Прилипает к низу карточки — кнопки не двигаются */
             bottom: 20px; /* Отступ от низа карточки */
-            z-index: 20; /* Выше всего */
+            z-index: 20; /* Выше всего (включая long) */
+            position: relative; /* ФИКС: Добавлено, чтобы кнопки "плавали" над absolute-элементами */
         }
         .btn {
             border: none;
@@ -137,6 +139,10 @@
             text-decoration: none;
             color: white;
             font-family: Arial, sans-serif; /* Шрифт для кнопок (глобальный). Измени на '"Dela Gothic One", sans-serif' если нужно */
+            white-space: nowrap; /* ФИКС: Текст кнопки не переносится (для "Запис на консультацію"). Если нужно перенос — удали */
+            overflow: hidden; /* ФИКС: Скрывает переполнение текста */
+            text-overflow: ellipsis; /* ФИКС: ... если текст длинный */
+            flex-wrap: nowrap; /* ФИКС: Не переносит flex-элементы (иконка + текст) */
         }
         .telegram-btn {
             background: #0088cc; /* Цвет Telegram */
@@ -153,6 +159,7 @@
         .icon {
             width: 20px; /* Размер иконки: 20x20px для компактности */
             height: 20px;
+            flex-shrink: 0; /* ФИКС: Иконка не сжимается */
         }
         /* Блокируем клики на кнопках (stopPropagation) */
         .buttons-container, .btn, .icon {
@@ -164,7 +171,10 @@
             }
             .course-card { 
                 padding: 15px; /* Мобильный: Уменьшенный padding карточки */
-                min-height: 500px; /* Мобильный: Адаптированная мин. высота */
+                min-height: 540px; /* ФИКС: Мобильный: Увеличена мин. высота (было 520px) под новый текст */
+            }
+            .description-container {
+                min-height: 110px; /* ФИКС: Мобильный: Под твой текст */
             }
             .description-container, .description, .description-long {
                 padding: 8px; /* Мобильный: Уменьшенный padding описания для экономии места */
@@ -177,6 +187,10 @@
             .buttons-container {
                 bottom: 15px; /* Мобильный: Меньший отступ от низа */
             }
+            .btn {
+                padding: 10px 16px; /* ФИКС: Мобильный: Компактнее кнопки под длинный текст */
+                font-size: 13px; /* ФИКС: Меньше шрифт на мобиле, чтобы текст влез */
+            }
         }
     </style>
 </head>
@@ -188,10 +202,10 @@
         <div class="course-price" id="score-display">У вас 0 з 200 балів</div>
         
         <!-- Обёртка для описания с увеличенной min-height -->
-        <div class="description-container">
+        <div class="description-container" id="desc-container"> <!-- ФИКС: id для JS -->
             <!-- Короткая версия описания (по умолчанию видимая) -->
             <div class="description" id="short-description">
-                Ви можете записатися до мене на консультацію щоб усунути цю проблемму. Записатися можна одним з наданих нижче способів.
+                Виражене вигорання — це стан сильного емоційного, фізичного та розумового виснаження, що виникає через хронічний стрес, найчастіше пов'язаний з роботою, але також зустрічається в особистому житті.
             </div>
             
             <!-- Длинная версия описания (скрытая, появляется при клике) -->
@@ -208,11 +222,11 @@
         <div class="buttons-container">
             <a href="https://t.me/Stec0407" target="_blank" class="btn telegram-btn">
                 <img src="img/telegram-icon.png" alt="Telegram" class="icon">
-                Телеграмм
+                Запис на консультацію
             </a>
             <a href="https://ig.me/m/stetsurina.irina_coach" target="_blank" class="btn direct-btn">
                 <img src="img/instagram-icon.png" alt="Instagram" class="icon">
-                Direct
+                Запис на консультацію
             </a>
         </div>
     </div>
@@ -235,7 +249,7 @@
             }
         }
 
-        // ОБНОВЛЕНО: Логика для переключения с сбросом inline-стилей + fade прозрачности картинки/баллов
+        // ОБНОВЛЕНО: Логика для переключения с постоянной стабилизацией min-height (кнопки не прыгают)
         let isLongActive = false;
         let shortHeight = 0; // Для хранения высоты short
         function toggleDescription(event) {
@@ -244,6 +258,7 @@
             
             const shortDesc = document.getElementById('short-description');
             const longDesc = document.getElementById('long-description');
+            const descContainer = document.getElementById('desc-container'); // ФИКС: Контейнер для управления min-height
             const image = document.querySelector('.course-image'); // Элемент картинки для fade
             const price = document.getElementById('score-display'); // Элемент баллов для fade (id='score-display')
             
@@ -261,19 +276,24 @@
                     longDesc.style.display = 'none';
                     longDesc.classList.remove('closing');
                     shortDesc.style.display = 'block';
+                    // ФИКС: Всегда держим min-height под short (с запасом 20px) — нет сжатия
+                    shortHeight = shortDesc.offsetHeight + 20;
+                    descContainer.style.minHeight = shortHeight + 'px';
                 }, 400); // Задержка под анимацию (синхронизируй с CSS transition '0.4s')
                 isLongActive = false;
             } else {
                 // Открытие: Скрыть short, показать long с динамической стартовой высотой
                 shortDesc.style.display = 'none';
                 longDesc.style.display = 'block';
-                // Динамически вычисляем высоту short для точного старта
-                shortHeight = shortDesc.offsetHeight || 100; // Fallback 100px
+                // Динамически вычисляем высоту short для точного старта (учитываем новый текст)
+                shortHeight = shortDesc.offsetHeight || 120; // Fallback 120px под твой текст
                 longDesc.style.maxHeight = shortHeight + 'px';
                 longDesc.style.top = '0';
                 longDesc.style.padding = window.innerWidth <= 600 ? '8px' : '10px';
                 longDesc.scrollTop = 0; // Скролл в начало
                 // ФИКС: Сброс inline-стилей перед анимацией, чтобы CSS-класс 'active' взял верх
+                // ФИКС: Держим min-height контейнера под short — long absolute не влияет на flow
+                descContainer.style.minHeight = shortHeight + 'px';
                 setTimeout(() => {
                     longDesc.style.maxHeight = '';
                     longDesc.style.top = '';
@@ -292,6 +312,12 @@
         // Привязка клика КАРТОЧКЕ (вся, кроме кнопок) + stopPropagation на кнопках
         document.addEventListener('DOMContentLoaded', function() {
             updateScoreDisplay();
+            
+            // ФИКС: Инициализация min-height контейнера под short (на загрузке)
+            const shortDesc = document.getElementById('short-description');
+            const descContainer = document.getElementById('desc-container');
+            shortHeight = shortDesc.offsetHeight + 20;
+            descContainer.style.minHeight = shortHeight + 'px';
             
             // Клик по карточке
             const card = document.getElementById('course-card');
