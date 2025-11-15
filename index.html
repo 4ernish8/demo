@@ -35,6 +35,7 @@
             border-radius: 8px;
             margin-bottom: 5px; /* Расстояние СНИЗУ картинки ДО заголовка. Уменьши/увеличь здесь для настройки */
             display: block; /* Обеспечивает правильный рендеринг изображения */
+            transition: opacity 0.4s ease-in-out; /* ФИКС: Плавная анимация прозрачности картинки (длительность 0.4s). Измени '0.4s' на '0.6s' для медленнее, или 'ease' на 'linear' для равномерности */
         }
         .course-title {
             font-size: 20px;
@@ -45,6 +46,7 @@
             font-size: 18px;
             color: #666;
             margin-bottom: 15px; /* Расстояние СНИЗУ цены ДО описания. Уменьши, если хочешь ближе */
+            transition: opacity 0.4s ease-in-out; /* ФИКС: Плавная анимация прозрачности баллов (длительность 0.4s). Измени '0.4s' на '0.3s' для быстрее */
         }
         /* ФИКС: Контейнер для описания с увеличенной мин. высотой, чтобы карточка не сжималась */
         .description-container {
@@ -56,10 +58,10 @@
             padding: 10px; /* Внутренний отступ внутри описания — редактируй для spacing текста от границ блока описания */
             background: #f9f9f9;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 14px; /* Размер шрифта короткого описания. Измени на '16px' для больше */
             line-height: 1.4;
             display: block; /* Видимое описание */
-            transition: all 0.3s ease; /* Плавная анимация для изменений */
+            transition: all 0.3s ease; /* Плавная анимация для изменений (длительность 0.3s). Измени '0.3s' на '0.5s' для медленнее */
         }
         .description:hover {
             background: #f0f0f0; /* Лёгкий hover-эффект для интерактивности */
@@ -72,22 +74,22 @@
             right: 0;
             top: 0; /* Стартует на позиции short-description (ниже баллов) */
             max-height: 0; /* Начальная высота 0 для скрытия до показа */
-            background: rgba(249, 249, 249, 0.95); /* Полупрозрачный фон для наложения */
+            background: rgba(249, 249, 249, 0.95); /* Полупрозрачный фон для наложения. Измени '0.95' на '1' для непрозрачного */
             padding: 10px; /* Начальный padding как у short */
             border-radius: 5px;
-            font-size: 14px;
-            line-height: 1.5;
-            text-align: right; /* Выравнивание текста по правому краю */
+            font-size: 14px; /* ФИКС: Размер шрифта длинного описания. Измени на '12px' для меньше, или '16px' для больше */
+            line-height: 1.5; /* Межстрочный интервал. Измени на '1.2' для компактнее */
+            text-align: left; /* ФИКС: Выравнивание текста по левому краю. Измени на 'right' для правого, 'center' для по центру, 'justify' для по ширине */
             z-index: 15; /* Выше всего (картинка/текст), но ниже кнопок */
             overflow-y: auto; /* Скролл для длинного текста */
-            transition: all 0.4s ease-in-out; /* Плавная анимация: top + max-height + padding + opacity */
+            transition: all 0.4s ease-in-out; /* ФИКС: Длительность анимации раскрытия (0.4s). Измени '0.4s' на '0.6s' для медленнее; 'ease-in-out' на 'ease-out' для ускорения в конце */
             opacity: 1; /* Виден сразу */
         }
         .description-long.active { 
             /* Класс для активации: "ползёт" вверх и расширяется вниз */
-            top: -320px; /* Конечная позиция — до верха картинки (image 200px + title/price/margins ~120px). Адаптируй в инспекторе */
-            max-height: 450px; /* ФИКС: Увеличена конечная высота для полного текста без скролла */
-            padding: 20px; /* Увеличивается padding для длинного текста */
+            top: -320px; /* ФИКС: Конечная позиция вверх (до верха картинки: image 200px + title/price/margins ~120px). Измени на '-300px' для меньше покрытия, '-350px' для больше */
+            max-height: 450px; /* ФИКС: Конечная высота (для полного текста без скролла). Измени на '500px' для больше пространства, '350px' для меньше */
+            padding: 20px; /* Увеличивается padding для длинного текста. Измени на '15px' для компактнее */
             opacity: 1;
         }
         .description-long.closing { /* Вспомогательный класс для фейда при закрытии */
@@ -95,6 +97,14 @@
         }
         .description-long:hover {
             background: rgba(240, 240, 240, 0.95);
+        }
+        /* ФИКС: Классы для прозрачности картинки и баллов при активации long */
+        .course-image.fade-out, .course-price.fade-out {
+            opacity: 0; /* Прозрачность 0 = полностью скрыто. Измени на '0.5' для полупрозрачного */
+            transition: opacity 0.4s ease-in-out; /* Длительность fade-out. Синхронизируй с .course-image/.course-price выше */
+        }
+        .course-image.fade-in, .course-price.fade-in {
+            opacity: 1; /* Возврат к полной видимости */
         }
         .buttons-container {
             display: flex;
@@ -149,8 +159,8 @@
                 padding: 8px; /* Мобильный: Уменьшенный padding описания для экономии места */
             }
             .description-long.active {
-                top: -280px; /* Мобильный: Конечная позиция вверх (компактнее) */
-                max-height: 400px; /* ФИКС: Увеличена конечная высота на мобиле */
+                top: -280px; /* Мобильный: Конечная позиция вверх (компактнее). Измени на '-260px' для меньше покрытия */
+                max-height: 400px; /* Мобильный: Конечная высота. Измени на '450px' для больше */
                 padding: 15px; /* Мобильный: Средний padding */
             }
             .buttons-container {
@@ -214,7 +224,7 @@
             }
         }
 
-        // ОБНОВЛЕНО: Логика для переключения с сбросом inline-стилей перед анимацией
+        // ОБНОВЛЕНО: Логика для переключения с сбросом inline-стилей + fade прозрачности картинки/баллов
         let isLongActive = false;
         let shortHeight = 0; // Для хранения высоты short
         function toggleDescription(event) {
@@ -223,16 +233,24 @@
             
             const shortDesc = document.getElementById('short-description');
             const longDesc = document.getElementById('long-description');
+            const image = document.querySelector('.course-image'); // Элемент картинки для fade
+            const price = document.getElementById('score-display'); // Элемент баллов для fade (id='score-display')
             
             if (isLongActive) {
-                // Закрытие: Добавить closing для фейда, убрать active (анимация обратно)
+                // Закрытие: Добавить closing для фейда long, убрать active (анимация обратно)
+                // ФИКС: Fade IN картинки/баллов (добавляем класс fade-in)
+                image.classList.add('fade-in');
+                price.classList.add('fade-in');
+                image.classList.remove('fade-out');
+                price.classList.remove('fade-out');
+                
                 longDesc.classList.add('closing');
                 longDesc.classList.remove('active');
                 setTimeout(() => {
                     longDesc.style.display = 'none';
                     longDesc.classList.remove('closing');
                     shortDesc.style.display = 'block';
-                }, 400); // Задержка под анимацию
+                }, 400); // Задержка под анимацию (синхронизируй с CSS transition '0.4s')
                 isLongActive = false;
             } else {
                 // Открытие: Скрыть short, показать long с динамической стартовой высотой
@@ -250,6 +268,11 @@
                     longDesc.style.top = '';
                     longDesc.style.padding = '';
                     longDesc.classList.add('active');
+                    // ФИКС: Fade OUT картинки/баллов (добавляем класс fade-out)
+                    image.classList.add('fade-out');
+                    price.classList.add('fade-out');
+                    image.classList.remove('fade-in');
+                    price.classList.remove('fade-in');
                 }, 10);
                 isLongActive = true;
             }
