@@ -24,14 +24,16 @@
             text-align: center;
             max-width: 300px; /* Один квадрат, компактный */
             width: 100%;
-            position: relative; /* Добавлено для позиционирования расширенного описания относительно карточки */
+            position: relative; /* Для позиционирования расширенного описания относительно карточки */
+            min-height: 550px; /* Минимальная высота карточки, чтобы она не сжималась. Адаптируй под контент (учитывая image + buttons) */
+            cursor: pointer; /* Курсор "рука" по всей карточке для интерактивности */
         }
         .course-image {
             width: 100%;
             height: 200px; /* Увеличено для одного элемента */
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 5px; /* ИЗМЕНЕНО: Было 15px — расстояние СНИЗУ картинки ДО заголовка. Уменьши/увеличь здесь для настройки */
+            margin-bottom: 5px; /* Расстояние СНИЗУ картинки ДО заголовка. Уменьши/увеличь здесь для настройки */
             display: block; /* Обеспечивает правильный рендеринг изображения */
         }
         .course-title {
@@ -44,37 +46,52 @@
             color: #666;
             margin-bottom: 15px; /* Расстояние СНИЗУ цены ДО описания. Уменьши, если хочешь ближе */
         }
+        /* ФИКС: Контейнер для описания с увеличенной мин. высотой, чтобы карточка не сжималась */
+        .description-container {
+            min-height: 100px; /* Placeholder высота для short (учитывая padding + текст), чтобы при скрытии long не было сдвига */
+            margin-bottom: 20px; /* Расстояние СНИЗУ контейнера ДО кнопок. Редактируй для spacing перед кнопками */
+            position: relative; /* Для позиционирования long внутри */
+        }
         .description {
-            margin-bottom: 20px; /* Расстояние СНИЗУ описания ДО кнопок. Редактируй для spacing перед кнопками */
             padding: 10px; /* Внутренний отступ внутри описания — редактируй для spacing текста от границ блока описания */
             background: #f9f9f9;
             border-radius: 5px;
             font-size: 14px;
             line-height: 1.4;
             display: block; /* Видимое описание */
-            cursor: pointer; /* Добавлено: Курсор "рука" при наведении, чтобы показать, что кликабельно */
-            transition: all 0.3s ease; /* Плавная анимация для изменений (расширение/сжатие) */
+            transition: all 0.3s ease; /* Плавная анимация для изменений */
         }
         .description:hover {
             background: #f0f0f0; /* Лёгкий hover-эффект для интерактивности */
         }
-        /* НОВОЕ: Скрытая длинная версия описания — перекрывает картинку при клике */
+        /* ОБНОВЛЕНО: Скрытая длинная версия — стартует на позиции short и "раскрывается" вверх + вниз */
         .description-long {
             display: none; /* По умолчанию скрыто */
             position: absolute; /* Абсолютное позиционирование для overlay */
-            top: 0; /* Прижимается к верху карточки, перекрывая картинку */
             left: 0;
             right: 0;
+            top: 0; /* Стартует на позиции short-description (ниже баллов) */
+            max-height: 0; /* Начальная высота 0 для скрытия до показа */
             background: rgba(249, 249, 249, 0.95); /* Полупрозрачный фон для наложения */
-            padding: 20px; /* Увеличенный внутренний отступ для длинного текста */
+            padding: 10px; /* Начальный padding как у short */
             border-radius: 5px;
             font-size: 14px;
             line-height: 1.5;
-            z-index: 10; /* Выше картинки, но ниже кнопок */
-            max-height: 250px; /* Ограничивает высоту, чтобы не перекрывать кнопки (адаптируй под свою картинку) */
-            overflow-y: auto; /* Скролл, если текст очень длинный */
-            cursor: pointer;
-            transition: all 0.3s ease;
+            text-align: right; /* Выравнивание текста по правому краю */
+            z-index: 15; /* Выше всего (картинка/текст), но ниже кнопок */
+            overflow-y: auto; /* Скролл для длинного текста */
+            transition: all 0.4s ease-in-out; /* Плавная анимация: top + max-height + padding + opacity */
+            opacity: 1; /* Виден сразу */
+        }
+        .description-long.active { 
+            /* Класс для активации: "ползёт" вверх и расширяется вниз */
+            top: -320px; /* Конечная позиция — до верха картинки (image 200px + title/price/margins ~120px). Адаптируй в инспекторе */
+            max-height: 450px; /* ФИКС: Увеличена конечная высота для полного текста без скролла */
+            padding: 20px; /* Увеличивается padding для длинного текста */
+            opacity: 1;
+        }
+        .description-long.closing { /* Вспомогательный класс для фейда при закрытии */
+            opacity: 0;
         }
         .description-long:hover {
             background: rgba(240, 240, 240, 0.95);
@@ -83,8 +100,9 @@
             display: flex;
             flex-direction: column;
             gap: 10px; /* Вертикальный стек кнопок: расстояние МЕЖДУ кнопками. Уменьши для ближе */
-            position: relative; /* Обеспечивает, что кнопки всегда сверху z-index расширенного описания */
-            z-index: 20; /* Кнопки всегда на переднем плане */
+            position: sticky; /* Прилипает к низу карточки — кнопки не двигаются */
+            bottom: 20px; /* Отступ от низа карточки */
+            z-index: 20; /* Выше всего */
         }
         .btn {
             border: none;
@@ -115,39 +133,55 @@
             width: 20px; /* Размер иконки: 20x20px для компактности */
             height: 20px;
         }
+        /* Блокируем клики на кнопках (stopPropagation) */
+        .buttons-container, .btn, .icon {
+            pointer-events: auto; /* Кнопки всегда кликабельны */
+        }
         @media (max-width: 600px) {
             body { 
                 padding: 10px; /* Мобильный: Уменьшенный общий padding страницы */
             }
             .course-card { 
                 padding: 15px; /* Мобильный: Уменьшенный padding карточки */
+                min-height: 500px; /* Мобильный: Адаптированная мин. высота */
             }
-            .description, .description-long {
+            .description-container, .description, .description-long {
                 padding: 8px; /* Мобильный: Уменьшенный padding описания для экономии места */
+            }
+            .description-long.active {
+                top: -280px; /* Мобильный: Конечная позиция вверх (компактнее) */
+                max-height: 400px; /* ФИКС: Увеличена конечная высота на мобиле */
+                padding: 15px; /* Мобильный: Средний padding */
+            }
+            .buttons-container {
+                bottom: 15px; /* Мобильный: Меньший отступ от низа */
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="course-card">
+    <div class="course-card" id="course-card">
         <img src="img/1.jpg" alt="Вигорання" class="course-image">
         <div class="course-title">У вас виражене вигорання</div>
         <div class="course-price" id="score-display">У вас 0 з 200 балів</div>
         
-        <!-- Короткая версия описания (по умолчанию видимая) -->
-        <div class="description" id="short-description">
-            Ви можете записатися до мене на консультацію щоб усунути цю проблемму. Записатися можна одним з наданих нижче способів.
-        </div>
-        
-        <!-- НОВОЕ: Длинная версия описания (скрытая, появляется при клике) -->
-        <div class="description-long" id="long-description">
-            Ви можете записатися до мене на консультацію щоб усунути цю проблему. Ось детальніше про те, як це працює:<br><br>
-            1. <strong>Перша консультація:</strong> Ми обговоримо ваші симптоми вигорання, оцінимо рівень стресу та складемо персональний план відновлення.<br>
-            2. <strong>Методики:</strong> Використовуємо когнітивно-поведінкову терапію, релаксаційні техніки (медитація, дихальні вправи) та практичні поради для балансу роботи та життя.<br>
-            3. <strong>Тривалість:</strong> 45-60 хвилин на сесію, онлайн через Telegram або Zoom.<br>
-            4. <strong>Ціна:</strong> 500 грн за сесію (перша — з 20% знижкою).<br><br>
-            Клікніть ще раз, щоб повернутися до короткої версії. Записатися нижче!
+        <!-- Обёртка для описания с увеличенной min-height -->
+        <div class="description-container">
+            <!-- Короткая версия описания (по умолчанию видимая) -->
+            <div class="description" id="short-description">
+                Ви можете записатися до мене на консультацію щоб усунути цю проблемму. Записатися можна одним з наданих нижче способів.
+            </div>
+            
+            <!-- Длинная версия описания (скрытая, появляется при клике) -->
+            <div class="description-long" id="long-description">
+                Ви можете записатися до мене на консультацію щоб усунути цю проблему. Ось детальніше про те, як це працює:<br><br>
+                1. <strong>Перша консультація:</strong> Ми обговоримо ваші симптоми вигорання, оцінимо рівень стресу та складемо персональний план відновлення.<br>
+                2. <strong>Методики:</strong> Використовуємо когнітивно-поведінкову терапію, релаксаційні техніки (медитація, дихальні вправи) та практичні поради для балансу роботи та життя.<br>
+                3. <strong>Тривалість:</strong> 45-60 хвилин на сесію, онлайн через Telegram або Zoom.<br>
+                4. <strong>Ціна:</strong> 500 грн за сесію (перша — з 20% знижкою).<br><br>
+                Клікніть ще раз, щоб повернутися до короткої версії. Записатися нижче!
+            </div>
         </div>
         
         <div class="buttons-container">
@@ -180,29 +214,68 @@
             }
         }
 
-        // НОВОЕ: Логика для переключения короткого/длинного описания
-        function toggleDescription() {
+        // ОБНОВЛЕНО: Логика для переключения с сбросом inline-стилей перед анимацией
+        let isLongActive = false;
+        let shortHeight = 0; // Для хранения высоты short
+        function toggleDescription(event) {
+            // Игнорируем, если клик на кнопках
+            if (event && event.target.closest('.buttons-container')) return;
+            
             const shortDesc = document.getElementById('short-description');
             const longDesc = document.getElementById('long-description');
             
-            if (shortDesc.style.display === 'none') {
-                // Возврат к короткой: скрыть длинную, показать короткую
-                longDesc.style.display = 'none';
-                shortDesc.style.display = 'block';
+            if (isLongActive) {
+                // Закрытие: Добавить closing для фейда, убрать active (анимация обратно)
+                longDesc.classList.add('closing');
+                longDesc.classList.remove('active');
+                setTimeout(() => {
+                    longDesc.style.display = 'none';
+                    longDesc.classList.remove('closing');
+                    shortDesc.style.display = 'block';
+                }, 400); // Задержка под анимацию
+                isLongActive = false;
             } else {
-                // Показать длинную: скрыть короткую, показать overlay
+                // Открытие: Скрыть short, показать long с динамической стартовой высотой
                 shortDesc.style.display = 'none';
                 longDesc.style.display = 'block';
+                // Динамически вычисляем высоту short для точного старта
+                shortHeight = shortDesc.offsetHeight || 100; // Fallback 100px
+                longDesc.style.maxHeight = shortHeight + 'px';
+                longDesc.style.top = '0';
+                longDesc.style.padding = window.innerWidth <= 600 ? '8px' : '10px';
+                longDesc.scrollTop = 0; // Скролл в начало
+                // ФИКС: Сброс inline-стилей перед анимацией, чтобы CSS-класс 'active' взял верх
+                setTimeout(() => {
+                    longDesc.style.maxHeight = '';
+                    longDesc.style.top = '';
+                    longDesc.style.padding = '';
+                    longDesc.classList.add('active');
+                }, 10);
+                isLongActive = true;
             }
         }
 
-        // Привязка клика к короткому описанию (длинное тоже кликабельно, т.к. cursor: pointer)
+        // Привязка клика КАРТОЧКЕ (вся, кроме кнопок) + stopPropagation на кнопках
         document.addEventListener('DOMContentLoaded', function() {
             updateScoreDisplay();
-            const shortDesc = document.getElementById('short-description');
-            const longDesc = document.getElementById('long-description');
-            shortDesc.addEventListener('click', toggleDescription);
-            longDesc.addEventListener('click', toggleDescription); // Для возврата
+            
+            // Клик по карточке
+            const card = document.getElementById('course-card');
+            card.addEventListener('click', toggleDescription);
+            
+            // Блокировка кликов на кнопках (не передавать event дальше)
+            const buttonsContainer = document.querySelector('.buttons-container');
+            buttonsContainer.addEventListener('click', function(event) {
+                event.stopPropagation(); // Остановить всплытие — кнопки работают, но не toggles описание
+            });
+            
+            // Также для ссылок внутри (на всякий)
+            const links = document.querySelectorAll('.btn');
+            links.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            });
         });
     </script>
 </body>
