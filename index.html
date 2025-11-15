@@ -102,7 +102,7 @@
     <div class="course-card">
         <img src="img/course1.jpg" alt="Курс 1" class="course-image">
         <div class="course-title">Курс 1: Основы</div>
-        <div class="course-price">999 ₴</div>
+        <div class="course-price" id="score-display">0 з 200 балів</div>
         <div class="description">Описание: Этот курс научит вас основам. Длительность: 10 часов. Включает видео и тесты.</div>
         
         <div class="buttons-container">
@@ -135,6 +135,20 @@
         //     window.Telegram.WebApp.ready();
         //     window.Telegram.WebApp.expand(); // Расширить на весь экран
         // }
+
+        // Динамическая вставка баллов из URL-параметров (ожидается ?total_score=XX)
+        function updateScoreDisplay() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const totalScore = urlParams.get('total_score') || '0';
+            const maxScore = urlParams.get('max_total') || '200'; // По умолчанию 200 из конфига
+            const scoreElement = document.getElementById('score-display');
+            if (scoreElement) {
+                scoreElement.textContent = `${totalScore} з ${maxScore} балів`;
+            }
+        }
+
+        // Вызываем при загрузке страницы
+        document.addEventListener('DOMContentLoaded', updateScoreDisplay);
     </script>
 </body>
 </html>
