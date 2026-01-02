@@ -19,6 +19,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
+            padding-bottom: 100px;
             background-color: #f4f4f4;
             color: #333;
             display: flex;
@@ -56,6 +57,7 @@
             color: var(--primary-color);
             font-family: "Balsamiq Sans", sans-serif;
             font-weight: 700;
+            transition: opacity 0.4s ease-in-out;
         }
 
         .course-price {
@@ -122,7 +124,7 @@
         }
 
         .description-long.active { 
-            top: -320px;
+            top: -280px;
             max-height: 450px;
             padding: 20px;
             opacity: 1;
@@ -166,6 +168,7 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
+            box-shadow: 0 0 0 2px rgba(221, 27, 27, 0.18);
         }
 
         .description-long ul {
@@ -175,20 +178,26 @@
         }
 
         .description-long ul > li {
-            margin-bottom: 8px;
             position: relative;
-            padding-left: 25px;
+            padding-left: 34px;
+            margin-bottom: 8px;
+            line-height: 1.6;
         }
 
         .description-long ul > li::before {
             content: '';
             position: absolute;
             left: 0;
-            top: 6px;
-            width: 12px;
-            height: 12px;
+            top: 0.55em;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: var(--primary-gradient);
+            background: radial-gradient(
+                circle at 30% 30%,
+                #ff4444,
+                var(--primary-color)
+            );
+            box-shadow: 0 0 0 2px rgba(221, 27, 27, 0.18);
         }
 
         .description-long strong {
@@ -201,6 +210,15 @@
         }
 
         .course-image.fade-in, .course-price.fade-in {
+            opacity: 1;
+        }
+        
+        .course-title.fade-out {
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .course-title.fade-in {
             opacity: 1;
         }
 
@@ -288,11 +306,27 @@
             background: #f9f9f9;
             border-radius: 8px;
             text-align: left;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        .coach-info img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .coach-info-text {
+            flex: 1;
         }
 
         .coach-info h3 {
             color: var(--primary-color);
             margin-top: 0;
+            margin-bottom: 5px;
             font-family: "Balsamiq Sans", sans-serif;
         }
 
@@ -304,6 +338,7 @@
         @media (max-width: 600px) {
             body { 
                 padding: 10px;
+                padding-bottom: 90px;
             }
             .course-card { 
                 padding: 15px;
@@ -316,7 +351,7 @@
                 padding: 8px;
             }
             .description-long.active {
-                top: -280px;
+                top: -240px;
                 max-height: 400px;
                 padding: 15px;
             }
@@ -327,6 +362,15 @@
             .btn {
                 padding: 10px 16px;
                 font-size: 13px;
+            }
+            .coach-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .coach-info img {
+                width: 100px;
+                height: 100px;
             }
         }
     </style>
@@ -405,15 +449,18 @@
                 </ol>
 
                 <div class="coach-info">
-                    <h3>Я - Стецуріна Ірина,</h3>
-                    <p><strong>бізнес-консультант, коуч, ментор, діагност</strong></p>
-                    <p>Допомагаю побудувати люблячі та довірливі відносини:</p>
-                    <ul>
-                        <li>з собою</li>
-                        <li>з партнерами</li>
-                        <li>з грошима</li>
-                        <li>з бізнесом</li>
-                    </ul>
+                    <img src="img/coach.jpg" alt="Стецуріна Ірина">
+                    <div class="coach-info-text">
+                        <h3>Я - Стецуріна Ірина,</h3>
+                        <p><strong>бізнес-консультант, коуч, ментор, діагност</strong></p>
+                        <p>Допомагаю побудувати люблячі та довірливі відносини:</p>
+                        <ul>
+                            <li>з собою</li>
+                            <li>з партнерами</li>
+                            <li>з грошима</li>
+                            <li>з бізнесом</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <h3 style="color: var(--primary-color); font-family: 'Balsamiq Sans', sans-serif;">Теми для коучингу, які доцільно опрацювати:</h3>
@@ -461,12 +508,15 @@
             const descContainer = document.getElementById('desc-container');
             const image = document.querySelector('.course-image');
             const price = document.getElementById('score-display');
+            const title = document.querySelector('.course-title');
             
             if (isLongActive) {
                 image.classList.add('fade-in');
                 price.classList.add('fade-in');
+                title.classList.add('fade-in');
                 image.classList.remove('fade-out');
                 price.classList.remove('fade-out');
+                title.classList.remove('fade-out');
                 
                 longDesc.classList.add('closing');
                 longDesc.classList.remove('active');
@@ -494,8 +544,10 @@
                     longDesc.classList.add('active');
                     image.classList.add('fade-out');
                     price.classList.add('fade-out');
+                    title.classList.add('fade-out');
                     image.classList.remove('fade-in');
                     price.classList.remove('fade-in');
+                    title.classList.remove('fade-in');
                 }, 10);
                 isLongActive = true;
             }
