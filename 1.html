@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Виражене вигорання</title>
-    <!-- НОВОЕ: Подключение Dela Gothic One из Google Fonts (preconnect для оптимизации) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --primary-color: #dd1b1b;
+            --primary-gradient: linear-gradient(135deg, #dd1b1b 0%, #ff4444 100%);
+        }
+
         body {
-            font-family: Arial, sans-serif; /* Глобальный шрифт для всего документа. Измени на 'Georgia, serif' для засечкового по умолчанию */
-            margin: 0; /* Общий отступ страницы от краёв экрана — редактируй для глобального spacing */
-            padding: 20px; /* Общий padding страницы — уменьши для более компактного вида на мобильных */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
             background-color: #f4f4f4;
             color: #333;
             display: flex;
@@ -25,66 +26,71 @@
             align-items: center;
             min-height: 100vh;
         }
+
         .course-card {
             background: white;
             border-radius: 10px;
-            padding: 20px; /* Внутренний отступ карточки от её границ — редактируй для расстояния от краёв карточки до контента */
+            padding: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
-            max-width: 300px; /* Один квадрат, компактный */
+            max-width: 300px;
             width: 100%;
-            position: relative; /* Для позиционирования расширенного описания относительно карточки */
-            min-height: 600px; /* ФИКС: Увеличена минимальная высота карточки под новый текст (было 580px). Адаптируй под контент (учитывая image + buttons + длинный short) */
-            cursor: pointer; /* Курсор "рука" по всей карточке для интерактивности */
+            position: relative;
+            min-height: 600px;
+            cursor: pointer;
         }
+
         .course-image {
             width: 100%;
-            height: 200px; /* Увеличено для одного элемента */
+            height: 200px;
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 5px; /* Расстояние СНИЗУ картинки ДО заголовка. Уменьши/увеличь здесь для настройки */
-            display: block; /* Обеспечивает правильный рендеринг изображения */
-            transition: opacity 0.4s ease-in-out; /* Плавная анимация прозрачности картинки (длительность 0.4s). Измени '0.4s' на '0.6s' для медленнее */
+            margin-bottom: 5px;
+            display: block;
+            transition: opacity 0.4s ease-in-out;
         }
+
         .course-title {
             font-size: 22px;
-            margin: 10px 0; /* Вертикальное расстояние ВЫШЕ и НИЖЕ заголовка: 10px сверху и снизу. Редактируй для spacing между заголовком и соседними элементами */
-            color: #dd1b1b;
-            /*font-family: Arial, sans-serif; /* Шрифт для заголовка (глобальный по умолчанию). Измени на 'Impact, sans-serif' для жирного */
-            font-family: "Balsamiq Sans", sans-serif; /* НОВОЕ: Шрифт Balsamiq Sans для заголовка (из Google Fonts). Fallback — sans-serif. Можно добавить font-weight: 700; если нужно */
-            font-weight: 700; /* 400 для normal, 700 для bold */
+            margin: 10px 0;
+            color: var(--primary-color);
+            font-family: "Balsamiq Sans", sans-serif;
+            font-weight: 700;
         }
+
         .course-price {
             font-size: 18px;
             color: #666;
-            margin-bottom: 15px; /* Расстояние СНИЗУ цены ДО описания. Уменьши, если хочешь ближе */
-            transition: opacity 0.4s ease-in-out; /* Плавная анимация прозрачности баллов (длительность 0.4s). Измени '0.4s' на '0.3s' для быстрее */
-            font-family: "Dela Gothic One", sans-serif; /* НОВОЕ: Шрифт Dela Gothic One для баллов (из Google Fonts). Fallback — sans-serif. Можно добавить font-weight: 400; если нужно */
+            margin-bottom: 15px;
+            transition: opacity 0.4s ease-in-out;
+            font-family: "Dela Gothic One", sans-serif;
         }
-        /* ФИКС: Контейнер для описания с увеличенной мин. высотой, чтобы карточка не сжималась */
+
         .description-container {
-            min-height: 120px; /* ФИКС: Placeholder под новый короткий текст (~4-5 строк). JS подхватит динамически */
-            margin-bottom: 20px; /* Расстояние СНИЗУ контейнера ДО кнопок. Редактируй для spacing перед кнопками */
-            position: relative; /* Для позиционирования long внутри */
-            transition: min-height 0.4s ease-in-out; /* ФИКС: Плавная анимация изменения min-height (синхронно с остальной анимацией). Измени '0.4s' на '0.2s' для быстрее */
+            min-height: 120px;
+            margin-bottom: 20px;
+            position: relative;
+            transition: min-height 0.4s ease-in-out;
         }
+
         .description {
-            padding: 10px; /* Внутренний отступ внутри описания — редактируй для spacing текста от границ блока описания */
+            padding: 10px;
             background: #f9f9f9;
             border-radius: 5px;
-            font-size: 14px; /* Размер шрифта короткого описания. Измени на '16px' для больше */
+            font-size: 14px;
             line-height: 1.4;
-            text-align: left; /* Выравнивание текста короткого описания. Измени на 'right' для правого, 'center' для по центру */
-            display: block; /* Видимое описание */
-            transition: all 0.3s ease; /* Плавная анимация для изменений (длительность 0.3s). Измени '0.3s' на '0.5s' для медленнее */
-            font-family: Arial, sans-serif; /* Шрифт для короткого описания (глобальный по умолчанию). Измени на 'Verdana, sans-serif' для другого */
-            position: relative; /* НОВОЕ: Для позиционирования SVG */
-            overflow: hidden; /* НОВОЕ: Чтобы обрезать свечение при необходимости */
+            text-align: left;
+            display: block;
+            transition: all 0.3s ease;
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
         }
+
         .description:hover {
-            background: #f0f0f0; /* Лёгкий hover-эффект для интерактивности */
+            background: #f0f0f0;
         }
-        /* НОВОЕ: SVG для движущегося свечения */
+
         .glow-svg {
             position: absolute;
             top: 0;
@@ -94,156 +100,233 @@
             z-index: 0;
             pointer-events: none;
         }
-        /* ОБНОВЛЕНО: Скрытая длинная версия — стартует на позиции short и "раскрывается" вверх + вниз */
+
         .description-long {
-            display: none; /* По умолчанию скрыто */
-            position: absolute; /* Абсолютное позиционирование для overlay */
+            display: none;
+            position: absolute;
             left: 0;
             right: 0;
-            top: 0; /* Стартует на позиции short-description (ниже баллов) */
-            max-height: 0; /* Начальная высота 0 для скрытия до показа */
-            background: rgba(249, 249, 249, 0.95); /* Полупрозрачный фон для наложения. Измени '0.95' на '1' для непрозрачного */
-            padding: 10px; /* Начальный padding как у short */
+            top: 0;
+            max-height: 0;
+            background: rgba(249, 249, 249, 0.95);
+            padding: 10px;
             border-radius: 5px;
-            font-size: 14px; /* Размер шрифта длинного описания. Измени на '12px' для меньше, или '16px' для больше */
-            line-height: 1.5; /* Межстрочный интервал. Измени на '1.2' для компактнее */
-            text-align: left; /* Выравнивание текста по левому краю. Измени на 'right' для правого, 'center' для по центру, 'justify' для по ширине */
-            z-index: 10; /* ФИКС: Уменьшен z-index (было 15), чтобы не конфликтовать с кнопками (20). Long overlay'ит только верх */
-            overflow-y: auto; /* Скролл для длинного текста */
-            transition: all 0.4s ease-in-out; /* Длительность анимации раскрытия (0.4s). Измени '0.4s' на '0.6s' для медленнее; 'ease-in-out' на 'ease-out' для ускорения в конце */
-            opacity: 1; /* Виден сразу */
-            font-family: Arial, sans-serif; /* Шрифт для длинного описания (глобальный по умолчанию). Измени на '"Dela Gothic One", sans-serif' для такого же как у баллов */
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+            z-index: 10;
+            overflow-y: auto;
+            transition: all 0.4s ease-in-out;
+            opacity: 1;
+            font-family: Arial, sans-serif;
         }
+
         .description-long.active { 
-            /* Класс для активации: "ползёт" вверх и расширяется вниз */
-            top: -320px; /* Конечная позиция вверх (до верха картинки: image 200px + title/price/margins ~120px). Измени на '-300px' для меньше покрытия, '-350px' для больше */
-            max-height: 450px; /* Конечная высота (для полного текста без скролла). Измени на '500px' для больше пространства, '350px' для меньше */
-            padding: 20px; /* Увеличивается padding для длинного текста. Измени на '15px' для компактнее */
+            top: -320px;
+            max-height: 450px;
+            padding: 20px;
             opacity: 1;
         }
-        .description-long.closing { /* Вспомогательный класс для фейда при закрытии */
+
+        .description-long.closing {
             opacity: 0;
         }
+
         .description-long:hover {
             background: rgba(240, 240, 240, 0.95);
         }
-        /* ФИКС: Классы для прозрачности картинки и баллов при активации long */
+
+        /* Стили для списков */
+        .description-long ol {
+            counter-reset: item;
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0;
+        }
+
+        .description-long ol > li {
+            counter-increment: item;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 45px;
+        }
+
+        .description-long ol > li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--primary-gradient);
+            color: white;
+            font-weight: bold;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .description-long ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 10px 0;
+        }
+
+        .description-long ul > li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .description-long ul > li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+        }
+
+        .description-long strong {
+            color: var(--primary-color);
+        }
+
         .course-image.fade-out, .course-price.fade-out {
-            opacity: 0; /* Прозрачность 0 = полностью скрыто. Измени на '0.5' для полупрозрачного */
-            transition: opacity 0.4s ease-in-out; /* Длительность fade-out. Синхронизируй с .course-image/.course-price выше */
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
         }
+
         .course-image.fade-in, .course-price.fade-in {
-            opacity: 1; /* Возврат к полной видимости */
+            opacity: 1;
         }
+
         .buttons-container {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* Вертикальный стек кнопок: расстояние МЕЖДУ кнопками. Уменьши для ближе */
-            position: sticky; /* Прилипает к низу карточки — кнопки не двигаются */
-            bottom: 20px; /* Отступ от низа карточки */
-            z-index: 20; /* Выше всего (включая long) */
-            position: relative; /* ФИКС: Добавлено, чтобы кнопки "плавали" над absolute-элементами */
+            gap: 10px;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 300px;
+            z-index: 20;
         }
+
         .btn {
             border: none;
-            padding: 12px 20px; /* Внутренний отступ кнопки: 12px сверху/снизу, 20px слева/справа — редактируй для размера кнопки */
+            padding: 12px 20px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px; /* Расстояние между иконкой и текстом в кнопке */
+            gap: 8px;
             text-decoration: none;
             color: white;
-            font-family: Arial, sans-serif; /* Шрифт для кнопок (глобальный). Измени на '"Dela Gothic One", sans-serif' если нужно */
-            white-space: nowrap; /* ФИКС: Текст кнопки не переносится (для "Запис на консультацію"). Если нужно перенос — удали */
-            overflow: hidden; /* ФИКС: Скрывает переполнение текста */
-            text-overflow: ellipsis; /* ФИКС: ... если текст длинный */
-            flex-wrap: nowrap; /* ФИКС: Не переносит flex-элементы (иконка + текст) */
-            position: relative; /* НОВОЕ: Для позиционирования блика */
+            font-family: Arial, sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-wrap: nowrap;
+            position: relative;
         }
-        /* НОВОЕ: Анимация горизонтального блика (shine) на кнопках */
+
         .btn::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%; /* Стартует слева за кнопкой */
-            width: 50%; /* Ширина блика — половина кнопки для компактности */
+            left: -100%;
+            width: 50%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent); /* Горизонтальный градиент для блика */
-            transition: left 0s; /* Плавное движение без задержки */
-            z-index: 1; /* Над фоном, но под текстом */
-            pointer-events: none; /* Не мешает кликам */
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0s;
+            z-index: 1;
+            pointer-events: none;
         }
+
         .btn.shine::before {
-            /* КОММЕНТАРИЙ: Здесь настраивается длительность полного цикла анимации (включая паузу): '8s' — время одного прохода блика + паузы (2s проезд + 6s пауза для интервала 4s между стартами). Меньше значение = быстрее общий цикл. Также 'ease-in-out' для плавности, 'infinite' для бесконечного повтора. */
-            animation: horizontalShine 8s ease-in-out infinite; /* Длительность 8s, бесконечно, с easing для плавности */
+            animation: horizontalShine 8s ease-in-out infinite;
         }
-        /* Анимация блика: от лева к праву с паузой */
+
         @keyframes horizontalShine {
             0% { left: -100%; }
-            /* КОММЕНТАРИЙ: Здесь заканчивается проезд блика: '25%' — пропорция длительности блика в цикле (2s / 8s = 25%). Измените на '20%' для короче блика (1.6s) или '30%' для длиннее (2.4s). */
             25% { left: 100%; }
-            /* КОММЕНТАРИЙ: От 25% до 100% — пауза (блик за пределами кнопки, невидим). Это обеспечивает интервал без пересечения. */
             100% { left: 100%; }
         }
-        /* Первая кнопка (Telegram) — стартует сразу */
+
         .telegram-btn.shine::before {
-            /* КОММЕНТАРИЙ: Задержка для первой кнопки: '0s' — начинается сразу. */
             animation-delay: 0s;
         }
-        /* Вторая кнопка (Direct) — задержка на 4s, чтобы по очереди без пересечения */
-        .direct-btn.shine::before {
-            /* КОММЕНТАРИЙ: Задержка для второй кнопки: '4s' — интервал между стартами анимаций (первая стартует в 0s, вторая в 4s, следующая первая в 8s и т.д.). Чтобы изменить интервал, отредактируйте это значение (например, '3s' для короче, '5s' для длиннее). Убедитесь, что интервал + длительность блика < длительности цикла, чтобы избежать пересечения. */
-            animation-delay: 4s;
-        }
+
         .telegram-btn {
-            background: #0088cc; /* Цвет Telegram */
+            background: #0088cc;
         }
+
         .telegram-btn:hover {
             background: #006ba3;
         }
-        .direct-btn {
-            background: #e4405f; /* Цвет Instagram */
-        }
-        .direct-btn:hover {
-            background: #c1354a;
-        }
+
         .icon {
-            width: 20px; /* Размер иконки: 20x20px для компактности */
+            width: 20px;
             height: 20px;
-            flex-shrink: 0; /* ФИКС: Иконка не сжимается */
+            flex-shrink: 0;
         }
-        /* Блокируем клики на кнопках (stopPropagation) */
+
         .buttons-container, .btn, .icon {
-            pointer-events: auto; /* Кнопки всегда кликабельны */
+            pointer-events: auto;
         }
+
+        .coach-info {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .coach-info h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-family: "Balsamiq Sans", sans-serif;
+        }
+
+        .coach-info p {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
         @media (max-width: 600px) {
             body { 
-                padding: 10px; /* Мобильный: Уменьшенный общий padding страницы */
+                padding: 10px;
             }
             .course-card { 
-                padding: 15px; /* Мобильный: Уменьшенный padding карточки */
-                min-height: 540px; /* ФИКС: Мобильный: Увеличена мин. высота (было 520px) под новый текст */
+                padding: 15px;
+                min-height: 540px;
             }
             .description-container {
-                min-height: 110px; /* ФИКС: Мобильный: Под твой текст */
+                min-height: 110px;
             }
             .description-container, .description, .description-long {
-                padding: 8px; /* Мобильный: Уменьшенный padding описания для экономии места */
+                padding: 8px;
             }
             .description-long.active {
-                top: -280px; /* Мобильный: Конечная позиция вверх (компактнее). Измени на '-260px' для меньше покрытия */
-                max-height: 400px; /* Мобильный: Конечная высота. Измени на '450px' для больше */
-                padding: 15px; /* Мобильный: Средний padding */
+                top: -280px;
+                max-height: 400px;
+                padding: 15px;
             }
             .buttons-container {
-                bottom: 15px; /* Мобильный: Меньший отступ от низа */
+                bottom: 15px;
+                width: calc(100% - 30px);
             }
             .btn {
-                padding: 10px 16px; /* ФИКС: Мобильный: Компактнее кнопки под длинный текст */
-                font-size: 13px; /* ФИКС: Меньше шрифт на мобиле, чтобы текст влез */
+                padding: 10px 16px;
+                font-size: 13px;
             }
         }
     </style>
@@ -255,11 +338,8 @@
         <div class="course-title">У вас виражене вигорання</div>
         <div class="course-price" id="score-display">У вас 0 з 200 балів</div>
         
-        <!-- Обёртка для описания с увеличенной min-height -->
-        <div class="description-container" id="desc-container"> <!-- ФИКС: id для JS -->
-            <!-- Короткая версия описания (по умолчанию видимая) -->
+        <div class="description-container" id="desc-container">
             <div class="description" id="short-description">
-                <!-- НОВОЕ: SVG для движущегося оранжевого свечения по контуру (мягкое неоновое, по часовой стрелке, цикл 5s БЕЗ пауз на углах — постоянная скорость) -->
                 <svg class="glow-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
                     <defs>
                         <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
@@ -273,7 +353,6 @@
                     <rect x="0" y="0" width="100" height="100" rx="2" ry="2" fill="none" stroke="#dd1b1b" stroke-width="1"
                           filter="url(#neon-glow)"
                           stroke-dasharray="50 350">
-                        <!-- ФИКС: Упрощена анимация для постоянной скорости (без пауз на углах): линейное движение от 0 до -400 за dur=5s, повтор бесконечно. Не трогай values/keyTimes — они теперь простые для равномерности. -->
                         <animate attributeName="stroke-dashoffset"
                                  dur="5s"
                                  repeatCount="indefinite"
@@ -282,20 +361,73 @@
                                  keyTimes="0; 1"/>
                     </rect>
                 </svg>
-                Виражене вигорання — це стан сильного емоційного, фізичного та розумового виснаження, що виникає через хронічний стрес, найчастіше пов'язаний з роботою, але також зустрічається в особистому житті.<br>
+                Виражене вигорання – це стан сильного емоційного, фізичного та розумового виснаження, що виникає через хронічний стрес, найчастіше пов'язаний з роботою, але також зустрічається в особистому житті.<br>
                 <span style="display: block; text-align: center; font-weight: bold;">
-                    <em><u>Натисни для рекомендацій</u></em>
+                    <em><u>Натисніть для рекомендацій</u></em>
                 </span>
             </div>
             
-            <!-- Длинная версия описания (скрытая, появляется при клике) -->
             <div class="description-long" id="long-description">
-                Ось детальніше про те, як це можна виправити:<br><br>
-                1. <strong>Перша консультація:</strong> Ми обговоримо ваші симптоми вигорання, оцінимо рівень стресу та складемо персональний план відновлення.<br>
-                2. <strong>Методики:</strong> Використовуємо когнітивно-поведінкову терапію, релаксаційні техніки (медитація, дихальні вправи) та практичні поради для балансу роботи та життя.<br>
-                3. <strong>Тривалість:</strong> 45-60 хвилин на сесію, онлайн через Telegram або Zoom.<br>
-                4. <strong>Ціна:</strong> 500 грн за сесію (перша — з 20% знижкою).<br><br>
-                Клікніть ще раз, щоб повернутися до короткої версії. Записатися нижче!
+                <h3 style="color: var(--primary-color); margin-top: 0; font-family: 'Balsamiq Sans', sans-serif;">РЕКОМЕНДАЦІЇ:</h3>
+                
+                <ol>
+                    <li>
+                        <strong>Психологічні вправи:</strong><br>
+                        Ведіть щоденник почуттів. Записуйте свої емоції та думки щодня, фіксуючи події, які їх викликали. Запитайте себе: «Як я можу підтримати себе в цій ситуації?» або «Чому я можу навчитися?»
+                    </li>
+                    <li>
+                        <strong>Фізична практика:</strong><br>
+                        Короткі прогулянки зі збільшенням активності. Додайте усвідомлені практики під час прогулянок: зосередьтеся на диханні, звуках або навколишньому середовищі (наприклад, використовуйте техніку «3-3-3» – три звуки, три предмети, три відчуття)
+                    </li>
+                    <li>
+                        <strong>Ментальна практика:</strong><br>
+                        Когнітивні тренування. Регулярно використовуйте головоломки, логічні завдання та ігри на розвиток уваги та пам'яті. Використовуйте спеціалізовані додатки, такі як Lumosity або Elevate, для персоналізованих тренувань когнітивних функцій
+                    </li>
+                    <li>
+                        <strong>Книги:</strong>
+                        <ul>
+                            <li>Середній рівень: «На межі» – Алекс Хатчінсон.</li>
+                            <li>Просунутий рівень: «Вигорання» – Еміл та Амелія Нагоскі.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Соціальна практика:</strong><br>
+                        Реабілітаційні програми. Виберіть програми, що поєднують терапію, фізичну активність та арт-терапію для більш глибокого відновлення
+                    </li>
+                    <li>
+                        <strong>Цифровий інструмент:</strong><br>
+                        Онлайн-сервіси підтримки (BetterHelp, Talkspace)
+                    </li>
+                    <li>
+                        <strong>Систематизація:</strong><br>
+                        30-денний план відновлення
+                    </li>
+                </ol>
+
+                <div class="coach-info">
+                    <h3>Я - Стецуріна Ірина,</h3>
+                    <p><strong>бізнес-консультант, коуч, ментор, діагност</strong></p>
+                    <p>Допомагаю побудувати люблячі та довірливі відносини:</p>
+                    <ul>
+                        <li>з собою</li>
+                        <li>з партнерами</li>
+                        <li>з грошима</li>
+                        <li>з бізнесом</li>
+                    </ul>
+                </div>
+
+                <h3 style="color: var(--primary-color); font-family: 'Balsamiq Sans', sans-serif;">Теми для коучингу, які доцільно опрацювати:</h3>
+                <ul>
+                    <li>Мінімізація зобов'язань</li>
+                    <li>Поступове відновлення</li>
+                    <li>Робота з почуттям провини</li>
+                    <li>Формування підтримки</li>
+                    <li>Гнучкий план на 30 днів</li>
+                </ul>
+
+                <p style="text-align: center; margin-top: 15px; font-style: italic;">
+                    Клікніть ще раз, щоб повернутися до короткої версії
+                </p>
             </div>
         </div>
         
@@ -304,47 +436,33 @@
                 <img src="img/telegram-icon.png" alt="Telegram" class="icon">
                 Запис на консультацію
             </a>
-            <a href="https://ig.me/m/stetsurina.irina_coach" target="_blank" class="btn direct-btn shine">
-                <img src="img/instagram-icon.png" alt="Instagram" class="icon">
-                Запис на консультацію
-            </a>
         </div>
     </div>
 
     <script>
-        // Для Telegram Mini App: инициализация (если бот настроен)
-        // if (window.Telegram && window.Telegram.WebApp) {
-        //     window.Telegram.WebApp.ready();
-        //     window.Telegram.WebApp.expand(); // Расширить на весь экран
-        // }
-
-        // Динамическая вставка баллов из URL-параметров (ожидается ?total_score=XX)
         function updateScoreDisplay() {
             const urlParams = new URLSearchParams(window.location.search);
             const totalScore = urlParams.get('total_score') || '0';
-            const maxScore = urlParams.get('max_total') || '200'; // По умолчанию 200 из конфига
+            const maxScore = urlParams.get('max_total') || '200';
             const scoreElement = document.getElementById('score-display');
             if (scoreElement) {
                 scoreElement.textContent = `${totalScore} з ${maxScore} балів`;
             }
         }
 
-        // ОБНОВЛЕНО: Логика для переключения с постоянной стабилизацией min-height (кнопки не прыгают)
         let isLongActive = false;
-        let shortHeight = 0; // Для хранения высоты short
+        let shortHeight = 0;
+
         function toggleDescription(event) {
-            // Игнорируем, если клик на кнопках
             if (event && event.target.closest('.buttons-container')) return;
             
             const shortDesc = document.getElementById('short-description');
             const longDesc = document.getElementById('long-description');
-            const descContainer = document.getElementById('desc-container'); // ФИКС: Контейнер для управления min-height
-            const image = document.querySelector('.course-image'); // Элемент картинки для fade
-            const price = document.getElementById('score-display'); // Элемент баллов для fade (id='score-display')
+            const descContainer = document.getElementById('desc-container');
+            const image = document.querySelector('.course-image');
+            const price = document.getElementById('score-display');
             
             if (isLongActive) {
-                // Закрытие: Добавить closing для фейда long, убрать active (анимация обратно)
-                // ФИКС: Fade IN картинки/баллов (добавляем класс fade-in)
                 image.classList.add('fade-in');
                 price.classList.add('fade-in');
                 image.classList.remove('fade-out');
@@ -356,30 +474,24 @@
                     longDesc.style.display = 'none';
                     longDesc.classList.remove('closing');
                     shortDesc.style.display = 'block';
-                    // ФИКС: Всегда держим min-height под short (с запасом 20px) — нет сжатия
                     shortHeight = shortDesc.offsetHeight + 20;
                     descContainer.style.minHeight = shortHeight + 'px';
-                }, 400); // Задержка под анимацию (синхронизируй с CSS transition '0.4s')
+                }, 400);
                 isLongActive = false;
             } else {
-                // Открытие: Скрыть short, показать long с динамической стартовой высотой
                 shortDesc.style.display = 'none';
                 longDesc.style.display = 'block';
-                // Динамически вычисляем высоту short для точного старта (учитываем новый текст)
-                shortHeight = shortDesc.offsetHeight || 120; // Fallback 120px под твой текст
+                shortHeight = shortDesc.offsetHeight || 120;
                 longDesc.style.maxHeight = shortHeight + 'px';
                 longDesc.style.top = '0';
                 longDesc.style.padding = window.innerWidth <= 600 ? '8px' : '10px';
-                longDesc.scrollTop = 0; // Скролл в начало
-                // ФИКС: Сброс inline-стилей перед анимацией, чтобы CSS-класс 'active' взял верх
-                // ФИКС: Держим min-height контейнера под short — long absolute не влияет на flow
+                longDesc.scrollTop = 0;
                 descContainer.style.minHeight = shortHeight + 'px';
                 setTimeout(() => {
                     longDesc.style.maxHeight = '';
                     longDesc.style.top = '';
                     longDesc.style.padding = '';
                     longDesc.classList.add('active');
-                    // ФИКС: Fade OUT картинки/баллов (добавляем класс fade-out)
                     image.classList.add('fade-out');
                     price.classList.add('fade-out');
                     image.classList.remove('fade-in');
@@ -389,27 +501,22 @@
             }
         }
 
-        // Привязка клика КАРТОЧКЕ (вся, кроме кнопок) + stopPropagation на кнопках
         document.addEventListener('DOMContentLoaded', function() {
             updateScoreDisplay();
             
-            // ФИКС: Инициализация min-height контейнера под short (на загрузке)
             const shortDesc = document.getElementById('short-description');
             const descContainer = document.getElementById('desc-container');
             shortHeight = shortDesc.offsetHeight + 20;
             descContainer.style.minHeight = shortHeight + 'px';
             
-            // Клик по карточке
             const card = document.getElementById('course-card');
             card.addEventListener('click', toggleDescription);
             
-            // Блокировка кликов на кнопках (не передавать event дальше)
             const buttonsContainer = document.querySelector('.buttons-container');
             buttonsContainer.addEventListener('click', function(event) {
-                event.stopPropagation(); // Остановить всплытие — кнопки работают, но не toggles описание
+                event.stopPropagation();
             });
             
-            // Также для ссылок внутри (на всякий)
             const links = document.querySelectorAll('.btn');
             links.forEach(link => {
                 link.addEventListener('click', function(event) {
