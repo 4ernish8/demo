@@ -238,6 +238,25 @@
             color: var(--primary-color);
         }
 
+        /* ============================================
+           СПЕЦІАЛЬНИЙ СТИЛЬ ДЛЯ СПИСКУ В БЛОЦІ КОУЧА
+           Зелені галочки замість точок
+           ============================================ */
+        .coach-info ul > li::before {
+            content: '✓'; /* Символ галочки */
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            background: none; /* Прибираємо градієнт */
+            box-shadow: none; /* Прибираємо тінь */
+            color: #28a745; /* Зелений колір галочки */
+            font-size: 16px;
+            font-weight: bold;
+        }
+
         /* Плавне зникання картинки, ціни та заголовку */
         .course-image.fade-out, .course-price.fade-out {
             opacity: 0;
