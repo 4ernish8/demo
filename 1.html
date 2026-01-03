@@ -19,7 +19,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            padding-bottom: 100px;
             background-color: #f4f4f4;
             color: #333;
             display: flex;
@@ -37,7 +36,6 @@
             max-width: 300px;
             width: 100%;
             position: relative;
-            min-height: 600px;
             cursor: pointer;
         }
 
@@ -226,12 +224,8 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 300px;
+            margin-top: 20px;
+            position: relative;
             z-index: 20;
         }
 
@@ -306,21 +300,15 @@
             background: #f9f9f9;
             border-radius: 8px;
             text-align: left;
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
         }
         
         .coach-info img {
-            width: 80px;
-            height: 80px;
+            width: 100%;
+            height: auto;
+            max-height: 200px;
             border-radius: 8px;
             object-fit: cover;
-            flex-shrink: 0;
-        }
-        
-        .coach-info-text {
-            flex: 1;
+            margin-bottom: 15px;
         }
 
         .coach-info h3 {
@@ -338,11 +326,9 @@
         @media (max-width: 600px) {
             body { 
                 padding: 10px;
-                padding-bottom: 90px;
             }
             .course-card { 
                 padding: 15px;
-                min-height: 540px;
             }
             .description-container {
                 min-height: 110px;
@@ -355,22 +341,12 @@
                 max-height: 400px;
                 padding: 15px;
             }
-            .buttons-container {
-                bottom: 15px;
-                width: calc(100% - 30px);
-            }
             .btn {
                 padding: 10px 16px;
                 font-size: 13px;
             }
-            .coach-info {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
             .coach-info img {
-                width: 100px;
-                height: 100px;
+                max-height: 150px;
             }
         }
     </style>
@@ -450,17 +426,15 @@
 
                 <div class="coach-info">
                     <img src="img/coach.jpg" alt="Стецуріна Ірина">
-                    <div class="coach-info-text">
-                        <h3>Я - Стецуріна Ірина,</h3>
-                        <p><strong>бізнес-консультант, коуч, ментор, діагност</strong></p>
-                        <p>Допомагаю побудувати люблячі та довірливі відносини:</p>
-                        <ul>
-                            <li>з собою</li>
-                            <li>з партнерами</li>
-                            <li>з грошима</li>
-                            <li>з бізнесом</li>
-                        </ul>
-                    </div>
+                    <h3>Я - Стецуріна Ірина,</h3>
+                    <p><strong>бізнес-консультант, коуч, ментор, діагност</strong></p>
+                    <p>Допомагаю побудувати люблячі та довірливі відносини:</p>
+                    <ul>
+                        <li>з собою</li>
+                        <li>з партнерами</li>
+                        <li>з грошима</li>
+                        <li>з бізнесом</li>
+                    </ul>
                 </div>
 
                 <h3 style="color: var(--primary-color); font-family: 'Balsamiq Sans', sans-serif;">Теми для коучингу, які доцільно опрацювати:</h3>
