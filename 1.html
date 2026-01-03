@@ -10,17 +10,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <style>
+        /* ============================================
+           ЗМІННІ КОЛЬОРІВ - ТУТ МІНЯЄМО КОЛЬОРИ ДЛЯ РІЗНИХ РЕЗУЛЬТАТІВ
+           ============================================ */
         :root {
+            /* Основний колір (заголовок, жирний текст) */
             --primary-color: #dd1b1b;
+            
+            /* Градієнт для цифр та точок списків */
             --primary-gradient: linear-gradient(135deg, #dd1b1b 0%, #ff4444 100%);
+            
+            /* Колір неонової обводки */
+            --neon-glow-color: #dd1b1b;
+            
+            /* Колір тексту в повній версії (можна змінити окремо) */
+            --text-color: #333;
+            
+            /* Колір тексту ціни/балів */
+            --score-color: #666;
+            
+            /* Фон кнопки Telegram */
+            --telegram-btn-color: #0088cc;
+            --telegram-btn-hover: #006ba3;
+            
+            /* Фон сірих блоків */
+            --bg-light: #f9f9f9;
+            --bg-light-hover: #f0f0f0;
         }
 
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 20px; /* Відступ навколо всієї сторінки */
             background-color: #f4f4f4;
-            color: #333;
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,56 +52,56 @@
 
         .course-card {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 10px; /* Округлення кутів карточки */
+            padding: 20px; /* Внутрішній відступ карточки */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Тінь карточки */
             text-align: center;
-            max-width: 300px;
+            max-width: 300px; /* Максимальна ширина карточки */
             width: 100%;
             position: relative;
-            cursor: pointer;
+            cursor: pointer; /* Курсор при наведенні */
         }
 
         .course-image {
             width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 5px;
+            height: 200px; /* Висота зображення */
+            object-fit: cover; /* Обрізка зображення по розміру */
+            border-radius: 8px; /* Округлення кутів зображення */
+            margin-bottom: 5px; /* Відступ знизу від зображення */
             display: block;
-            transition: opacity 0.4s ease-in-out;
+            transition: opacity 0.4s ease-in-out; /* Плавне зникання */
         }
 
         .course-title {
             font-size: 22px;
-            margin: 10px 0;
+            margin: 10px 0; /* Відступи зверху і знизу */
             color: var(--primary-color);
             font-family: "Balsamiq Sans", sans-serif;
             font-weight: 700;
-            transition: opacity 0.4s ease-in-out;
+            transition: opacity 0.4s ease-in-out; /* Плавне зникання */
         }
 
         .course-price {
             font-size: 18px;
-            color: #666;
-            margin-bottom: 15px;
-            transition: opacity 0.4s ease-in-out;
+            color: var(--score-color);
+            margin-bottom: 15px; /* Відступ знизу */
+            transition: opacity 0.4s ease-in-out; /* Плавне зникання */
             font-family: "Dela Gothic One", sans-serif;
         }
 
         .description-container {
-            min-height: 120px;
-            margin-bottom: 20px;
+            min-height: 120px; /* Мінімальна висота блоку опису */
+            margin-bottom: 20px; /* Відступ знизу від опису до кнопки */
             position: relative;
             transition: min-height 0.4s ease-in-out;
         }
 
         .description {
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 5px;
+            padding: 10px; /* Внутрішній відступ короткого опису */
+            background: var(--bg-light);
+            border-radius: 5px; /* Округлення кутів */
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.4; /* Висота рядка */
             text-align: left;
             display: block;
             transition: all 0.3s ease;
@@ -88,9 +111,10 @@
         }
 
         .description:hover {
-            background: #f0f0f0;
+            background: var(--bg-light-hover); /* Колір при наведенні */
         }
 
+        /* SVG неонова обводка */
         .glow-svg {
             position: absolute;
             top: 0;
@@ -98,9 +122,10 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            pointer-events: none;
+            pointer-events: none; /* Не блокує клік */
         }
 
+        /* Повний опис (розгорнутий) */
         .description-long {
             display: none;
             position: absolute;
@@ -115,42 +140,47 @@
             line-height: 1.5;
             text-align: left;
             z-index: 10;
-            overflow-y: auto;
-            transition: all 0.4s ease-in-out;
+            overflow-y: auto; /* Прокрутка при переповненні */
+            transition: all 0.4s ease-in-out; /* Плавна анімація розгортання */
             opacity: 1;
             font-family: Arial, sans-serif;
+            color: var(--text-color);
         }
 
+        /* Активний стан повного опису - зміщення вгору та висота */
         .description-long.active { 
-            top: -280px;
-            max-height: 450px;
+            top: -220px; /* Відступ вгору = відступ від краю до картинки (20px) */
+            max-height: 450px; /* Максимальна висота повного опису */
             padding: 20px;
             opacity: 1;
         }
 
         .description-long.closing {
-            opacity: 0;
+            opacity: 0; /* Плавне зникання при закритті */
         }
 
         .description-long:hover {
             background: rgba(240, 240, 240, 0.95);
         }
 
-        /* Стили для списков */
+        /* ============================================
+           СТИЛІ НУМЕРОВАНОГО СПИСКУ (OL)
+           ============================================ */
         .description-long ol {
-            counter-reset: item;
+            counter-reset: item; /* Скидання лічильника */
             list-style: none;
             padding-left: 0;
             margin: 10px 0;
         }
 
         .description-long ol > li {
-            counter-increment: item;
-            margin-bottom: 15px;
+            counter-increment: item; /* Збільшення лічильника */
+            margin-bottom: 15px; /* Відступ між пунктами */
             position: relative;
-            padding-left: 45px;
+            padding-left: 45px; /* Відступ для цифри зліва */
         }
 
+        /* Цифра в градієнтному квадраті */
         .description-long ol > li::before {
             content: counter(item);
             position: absolute;
@@ -159,16 +189,19 @@
             background: var(--primary-gradient);
             color: white;
             font-weight: bold;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
+            width: 32px; /* Ширина квадрата */
+            height: 32px; /* Висота квадрата */
+            border-radius: 6px; /* Округлення кутів квадрата */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            box-shadow: 0 0 0 2px rgba(221, 27, 27, 0.18);
+            box-shadow: 0 0 0 2px rgba(221, 27, 27, 0.18); /* Обводка квадрата */
         }
 
+        /* ============================================
+           СТИЛІ МАРКОВАНОГО СПИСКУ (UL)
+           ============================================ */
         .description-long ul {
             list-style: none;
             padding-left: 0;
@@ -177,31 +210,34 @@
 
         .description-long ul > li {
             position: relative;
-            padding-left: 34px;
-            margin-bottom: 8px;
+            padding-left: 20px; /* ⚠️ ВІДСТУП ВІД ТОЧКИ ДО ТЕКСТУ - зменшено в 3 рази (було 34px -> стало ~11px, округлили до 20px) */
+            margin-bottom: 8px; /* Відступ між пунктами */
             line-height: 1.6;
         }
 
+        /* Градієнтна точка */
         .description-long ul > li::before {
             content: '';
             position: absolute;
             left: 0;
-            top: 0.55em;
-            width: 10px;
+            top: 0.55em; /* Вирівнювання по вертикалі */
+            width: 10px; /* Розмір точки */
             height: 10px;
-            border-radius: 50%;
+            border-radius: 50%; /* Робимо круглою */
             background: radial-gradient(
                 circle at 30% 30%,
                 #ff4444,
                 var(--primary-color)
             );
-            box-shadow: 0 0 0 2px rgba(221, 27, 27, 0.18);
+            box-shadow: 0 0 0 2px rgba(221, 27, 27, 0.18); /* Обводка точки */
         }
 
+        /* Жирний текст в списках */
         .description-long strong {
             color: var(--primary-color);
         }
 
+        /* Плавне зникання картинки, ціни та заголовку */
         .course-image.fade-out, .course-price.fade-out {
             opacity: 0;
             transition: opacity 0.4s ease-in-out;
@@ -220,95 +256,102 @@
             opacity: 1;
         }
 
+        /* Контейнер кнопки */
         .buttons-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 10px; /* Відступ між кнопками */
+            margin-top: 20px; /* Відступ зверху від попереднього блоку */
             position: relative;
             z-index: 20;
         }
 
+        /* Стиль кнопки */
         .btn {
             border: none;
-            padding: 12px 20px;
-            border-radius: 5px;
+            padding: 12px 20px; /* Внутрішні відступи кнопки */
+            border-radius: 5px; /* Округлення кнопки */
             cursor: pointer;
             font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 8px; /* Відступ між іконкою і текстом */
             text-decoration: none;
             color: white;
             font-family: Arial, sans-serif;
-            white-space: nowrap;
+            white-space: nowrap; /* Текст в один рядок */
             overflow: hidden;
-            text-overflow: ellipsis;
+            text-overflow: ellipsis; /* Трикрапка при переповненні */
             flex-wrap: nowrap;
             position: relative;
         }
 
+        /* Блик на кнопці */
         .btn::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 50%;
+            left: -100%; /* Стартова позиція блика за межами */
+            width: 50%; /* Ширина блика */
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             transition: left 0s;
             z-index: 1;
-            pointer-events: none;
+            pointer-events: none; /* Не блокує клік */
         }
 
+        /* Анімація блика */
         .btn.shine::before {
-            animation: horizontalShine 8s ease-in-out infinite;
+            animation: horizontalShine 8s ease-in-out infinite; /* ⚠️ ШВИДКІСТЬ БЛИКА: 8s = 8 секунд на один цикл */
         }
 
         @keyframes horizontalShine {
             0% { left: -100%; }
-            25% { left: 100%; }
-            100% { left: 100%; }
+            25% { left: 100%; } /* Блик проходить за 25% часу */
+            100% { left: 100%; } /* Пауза до наступного циклу */
         }
 
         .telegram-btn.shine::before {
-            animation-delay: 0s;
+            animation-delay: 0s; /* Затримка перед стартом */
         }
 
+        /* Колір кнопки Telegram */
         .telegram-btn {
-            background: #0088cc;
+            background: var(--telegram-btn-color);
         }
 
         .telegram-btn:hover {
-            background: #006ba3;
+            background: var(--telegram-btn-hover); /* Темніше при наведенні */
         }
 
+        /* Іконка в кнопці */
         .icon {
             width: 20px;
             height: 20px;
-            flex-shrink: 0;
+            flex-shrink: 0; /* Не стискається */
         }
 
         .buttons-container, .btn, .icon {
-            pointer-events: auto;
+            pointer-events: auto; /* Кнопка клікабельна */
         }
 
+        /* Блок інформації про коуча */
         .coach-info {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f9f9f9;
+            margin: 20px 0; /* Відступи зверху і знизу */
+            padding: 15px; /* Внутрішній відступ */
+            background: var(--bg-light);
             border-radius: 8px;
             text-align: left;
         }
         
         .coach-info img {
-            width: 100%;
+            width: 100%; /* Фото на всю ширину */
             height: auto;
-            max-height: 200px;
+            max-height: 200px; /* Максимальна висота фото */
             border-radius: 8px;
-            object-fit: cover;
-            margin-bottom: 15px;
+            object-fit: cover; /* Обрізка по розміру */
+            margin-bottom: 15px; /* Відступ знизу */
         }
 
         .coach-info h3 {
@@ -323,9 +366,10 @@
             line-height: 1.5;
         }
 
+        /* Мобільні пристрої */
         @media (max-width: 600px) {
             body { 
-                padding: 10px;
+                padding: 10px; /* Менший відступ на мобільних */
             }
             .course-card { 
                 padding: 15px;
@@ -337,7 +381,7 @@
                 padding: 8px;
             }
             .description-long.active {
-                top: -240px;
+                top: -180px; /* Менше зміщення вгору на мобільних */
                 max-height: 400px;
                 padding: 15px;
             }
@@ -346,7 +390,7 @@
                 font-size: 13px;
             }
             .coach-info img {
-                max-height: 150px;
+                max-height: 150px; /* Менша висота фото */
             }
         }
     </style>
@@ -370,6 +414,10 @@
                             </feMerge>
                         </filter>
                     </defs>
+                    <!-- ⚠️ ПАРАМЕТРИ НЕОНОВОЇ ОБВОДКИ -->
+                    <!-- stroke-dasharray="50 350" - довжина штриха (50px) та пробілу (350px) -->
+                    <!-- dur="5s" - ШВИДКІСТЬ: 5 секунд на повний оборот -->
+                    <!-- values="0; -400" - зміщення від 0 до -400 для руху -->
                     <rect x="0" y="0" width="100" height="100" rx="2" ry="2" fill="none" stroke="#dd1b1b" stroke-width="1"
                           filter="url(#neon-glow)"
                           stroke-dasharray="50 350">
@@ -445,10 +493,6 @@
                     </li>
                 </ol>
 
-                
-
-                
-
                 <div class="coach-info">
                     <img src="img/coach.jpg" alt="Стецуріна Ірина">
                     <h3>Я - Стецуріна Ірина,</h3>
@@ -462,7 +506,7 @@
                     </ul>
                 </div>
                 
-                <p>📌Хочете отримати ще більше корисних практик та/або знайти відповіді на питання, які вас давно турбують – пишіть в особисті повідомлення і ми домовимось про безкоштовний зізвон і подальшу роботу</p>
+                <p>📌 Хочете отримати ще більше корисних практик та/або знайти відповіді на питання, які вас давно турбують – пишіть в особисті повідомлення і ми домовимось про безкоштовний дзвінок і подальшу роботу</p>
                 <p style="text-align: center; margin-top: 15px; font-style: italic;">
                     Клікніть ще раз, щоб повернутися до короткої версії
                 </p>
@@ -479,6 +523,7 @@
     </div>
 
     <script>
+        // Оновлення відображення балів з URL параметрів
         function updateScoreDisplay() {
             const urlParams = new URLSearchParams(window.location.search);
             const totalScore = urlParams.get('total_score') || '0';
@@ -489,10 +534,12 @@
             }
         }
 
-        let isLongActive = false;
-        let shortHeight = 0;
+        let isLongActive = false; // Чи відкрито повний опис
+        let shortHeight = 0; // Висота короткого опису
 
+        // Перемикання між коротким і повним описом
         function toggleDescription(event) {
+            // Ігноруємо клік по кнопках
             if (event && event.target.closest('.buttons-container')) return;
             
             const shortDesc = document.getElementById('short-description');
@@ -503,6 +550,7 @@
             const title = document.querySelector('.course-title');
             
             if (isLongActive) {
+                // Закриваємо повний опис
                 image.classList.add('fade-in');
                 price.classList.add('fade-in');
                 title.classList.add('fade-in');
@@ -518,16 +566,17 @@
                     shortDesc.style.display = 'block';
                     shortHeight = shortDesc.offsetHeight + 20;
                     descContainer.style.minHeight = shortHeight + 'px';
-                }, 400);
+                }, 400); // Час анімації закриття (0.4s)
                 isLongActive = false;
             } else {
+                // Відкриваємо повний опис
                 shortDesc.style.display = 'none';
                 longDesc.style.display = 'block';
                 shortHeight = shortDesc.offsetHeight || 120;
                 longDesc.style.maxHeight = shortHeight + 'px';
                 longDesc.style.top = '0';
                 longDesc.style.padding = window.innerWidth <= 600 ? '8px' : '10px';
-                longDesc.scrollTop = 0;
+                longDesc.scrollTop = 0; // Скрол на початок
                 descContainer.style.minHeight = shortHeight + 'px';
                 setTimeout(() => {
                     longDesc.style.maxHeight = '';
@@ -540,11 +589,12 @@
                     image.classList.remove('fade-in');
                     price.classList.remove('fade-in');
                     title.classList.remove('fade-in');
-                }, 10);
+                }, 10); // Мінімальна затримка для спрацювання анімації
                 isLongActive = true;
             }
         }
 
+        // Ініціалізація при завантаженні сторінки
         document.addEventListener('DOMContentLoaded', function() {
             updateScoreDisplay();
             
@@ -553,9 +603,11 @@
             shortHeight = shortDesc.offsetHeight + 20;
             descContainer.style.minHeight = shortHeight + 'px';
             
+            // Клік по карточці перемикає опис
             const card = document.getElementById('course-card');
             card.addEventListener('click', toggleDescription);
             
+            // Блокуємо подію кліку на кнопках
             const buttonsContainer = document.querySelector('.buttons-container');
             buttonsContainer.addEventListener('click', function(event) {
                 event.stopPropagation();
